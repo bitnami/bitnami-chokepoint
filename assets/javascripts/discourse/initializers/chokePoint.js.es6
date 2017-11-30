@@ -168,6 +168,7 @@ export default {
               info = `${Discourse.User.current().get('username')}`;
               ga('send', 'event', 'SupportCase', 'Solved', info);
             }
+            document.documentElement.style.overflow='auto';
             if ($('.bitnami-b').length) $('.bitnami-b').remove();
           };
 

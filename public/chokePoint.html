@@ -1,0 +1,218 @@
+<script id="type" type="text/x-jsrender">
+  <h4>What can we help you with?</h4>
+  [[if currentPage == 3]]
+  <select disabled tabindex="-1" style="display: block;" data-link="typeSelected">
+  [[else]]
+  <select tabindex="-1" style="display: block;" data-link="typeSelected">
+  [[/fi]]
+    <option value="" disabled selected>Select a type…</option>
+    [[for typeValues]]
+      <option>[[:type]]</option>
+    [[/for]]
+  </select>
+</script>
+
+<script id="platform" type="text/x-jsrender">
+  <h4 class="margin-t-big">What platform are you using?</h4>
+  [[if currentPage == 3]]
+  <select disabled tabindex="-1" style="display: block;" data-link="platformSelected">
+  [[else]]
+  <select tabindex="-1" style="display: block;" data-link="platformSelected">
+  [[/fi]]
+    <option value="" disabled selected>Select a platform…</option>
+    [[for platformValues]]
+      [[if subtype]]
+        <optgroup label="[[:platform]]">
+          [[for subplatforms]]
+            <option>[[:subplatform]]</option>
+          [[/for]]
+        </optgroup>
+      [[else]]
+        <option>[[:platform]]</option>
+      [[/if]]
+    [[/for]]
+  </select>
+</script>
+
+<script id="application" type="text/x-jsrender">
+  <h4 class="margin-t-big">What application are you using?</h4>
+  [[if currentPage == 3]]
+  <select disabled tabindex="-1" style="display: block;" data-link="applicationSelected">
+    <option value="General">General</option>
+    [[for applicationValues]]
+      <option value="[[:application]]">[[:application]]</option>
+    [[/for]]
+  </select>
+  [[else]]
+    [^[if browser != 'Apple Computer, Inc.']]
+      <input placeholder="Choose an application..." list="applications" data-link="applicationSelected">
+      <datalist id="applications">
+        <option value="General">General</option>
+        [[for applicationValues]]
+          <option value="[[:application]]">[[:application]]</option>
+        [[/for]]
+      </datalist>
+    [[else]]
+      <select tabindex="-1" style="display: block;" data-link="applicationSelected">
+        <option value="" disabled selected>Select an application…</option>
+        <option value="General">General</option>
+        [[for applicationValues]]
+          <option value="[[:application]]">[[:application]]</option>
+        [[/for]]
+      </select>
+    [[/fi]]
+  [[/fi]]
+</script>
+
+<script id="topic" type="text/x-jsrender">
+  <h4 class="margin-t-big">What is your case related to?</h4>
+  [[if currentPage == 3]]
+  <select disabled tabindex="-1" style="display: block;" data-link="topicSelected">
+  [[else]]
+  <select tabindex="-1" style="display: block;" data-link="~root.topicSelected">
+  [[/fi]]
+    <option value="" disabled selected>Select a topic…</option>
+    [[for ~root.topicValues]]
+      <option>[[:topic]]</option>
+    [[/for]]
+    <option>Other</option>
+  </select>
+</script>
+
+<script id="title" type="text/x-jsrender">
+  <h4>Title</h4>
+  <textarea class="title" placeholder="Summarize your case in less than 120 characters" maxlength="120" data-link="titleFilled"></textarea>
+</script>
+
+<script id="bnsupport" type="text/x-jsrender">
+  <div>
+    <h4>Bitnami Support Tool ID <small>optional</small></h4>
+    <p class="bnsupport">The Bitnami Support Tool is a command line tool that collects relevant information that allows the Bitnami Support Team to debug certain issues in Bitnami Stacks.</p>
+    <p class="bnsupport">Before to submit a question in the Bitnami Community, it is desirable to run this tool in the affected environment. Then, send us the resulting code so we can analyze it in detail. <a href="https://docs.bitnami.com/general/components/bnsupport/" target="_blank">Here</a> you can find more info.</p>
+    <textarea class="bnsupport" placeholder="123456789-abcd-1234-abcd-123456789abc" maxlength="37" data-link="bnsupportFilled"></textarea>
+  </div>
+</script>
+
+<script id="issue" type="text/x-jsrender">
+  <div>
+    <h4>Describe here your [[if typeSelected == 'Technical issue']]issue[[else typeSelected == 'How to' || typeSelected == 'Sales & Account']]question[[else typeSelected == 'Suggestion']]suggestion[[/if]]</h4>
+    <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]the steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion[[else]]your question[[/if]] as detailed as possible" data-link="textareaFilled"></textarea>
+  </div>
+  <div class="text-r padding-r-giant">
+    <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Styling with Markdown is supported</a>
+  </div>
+</script>
+
+<script id="search" type="text/x-jsrender">
+  <div class="row collapse-b-tablet">
+    <div class="col-12">
+      <div class="search margin-t-small">
+        <h3 class="margin-t-small">Related results</h3>
+        <p class="margin-b-normal">Before continue, we recommend you to review those related results</p>
+        <div class="input-group">
+          <input id="search" type="search" placeholder="Search" class="form-control margin-t-small" value="[[if platformSelected != 'Other']][[:platformSelected]][[/if]] [[if applicationSelected != 'General']][[:applicationSelected]][[/if]] [[if topicSelected != 'Other']][[:topicSelected]][[/if]]"/>
+          <div class="dropdown dropdown-right filters">
+            <button class="button button-dropdown" aria-haspopup="true">All Bitnami sites</button>
+            <ul class="dropdown__list remove-style elevation-1 slide-in margin-t-normal" aria-hidden="true" aria-label="submenu">
+              <li class="search__filter" data-item="1"><a>FAQ</a></li>
+              <li class="search__filter" data-item="2"><a>How-To Guides</a></li>
+              <li class="search__filter" data-item="3"><a>Support Forums</a></li>
+              <li class="search__filter" data-item="4"><a>Documentation</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="search__results padding-h-big"></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h4 class="margin-t-small">Have you found what you were looking for?</h4>
+    <button class="button button-action" onclick="goToPage3()">No</button>
+    <button class="button button-accent" onclick="cancel()">Yes</button>
+    <div class="text-r padding-r-normal padding-t-normal" style="float: right">
+      <a onclick="goToPage1()">Go back</a>
+    </div>
+  </div>
+</script>
+
+<script id="explanationCase" type="text/x-jsrender">
+  <div class="row collapse-b-tablet">
+    <div class="col-5 margin-h-big">
+      <h3 class="margin-t-small margin-b-normal">Your previous selection</h3>
+      [^[include tmpl="#type"/]]
+      [^[include tmpl="#platform"/]]
+      [^[include tmpl="#application"/]]
+      [^[include tmpl="#topic"/]]
+    </div>
+    <div class="col-6 margin-h-big">
+      [^[include tmpl="#title"/]]
+      [^[include tmpl="#issue"/]]
+    [^[if typeSelected == 'Technical issue']]
+      [^[include tmpl="#bnsupport"/]]
+    [[/if]]
+      <div class="margin-t-small">
+        <button class="button" onclick="cancel()">Cancel</button>
+        <button class="button button-accent" onclick="create()">Create case</button>
+        <div class="text-r padding-r-giant padding-t-normal" style="float: right">
+          <a onclick="goToPage2()">Go back</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="mainTpl" type="text/x-jsrender">
+  <div id="bitnamiContainer" onmouseover="document.documentElement.style.overflow=\'hidden\';" onmouseout="document.documentElement.style.overflow=\'auto\';" class="container padding-bigger padding-v-normal bg-iron elevation-2">
+    <div class="row collapse-b-tablet">
+      <div class="col-6 margin-h-big margin-t-enormous">
+        <h3>Welcome to the Bitnami Community!!</h3>
+        <p class="margin-t-big">In order to reduce the resolution time, we ask you for some information related to your question or issue. In this way, we can offer you some suggestions based on our knowledge base such as previous solved topics, guides, documentation, etc.</p>
+        <p>If after the suggestions you have not found the information you were looking for, you can proceed with the topic creation.</p>
+        <p>We also recommend you to take a look at the rules of this community, you can find the rules <a href="https://community.bitnami.com/faq" target="_blank">here</a>.</p>
+      </div>
+      <div class="col-5 margin-h-big margin-t-enormous">
+        [^[include tmpl="#type"/]]
+        [^[if typeSelected]]
+          [^[if typeSelected == 'How to' || typeSelected == 'Technical issue']]
+            [^[include tmpl="#platform"/]]
+            [^[if platformSelected]]
+              [^[include tmpl="#application"/]]
+              [^[if applicationSelected]]
+                [[for applicationValues]]
+                  [^[if ~root.applicationSelected == application]]
+                    [^[include tmpl="#topic"/]]
+                  [[/if]]
+                [[/for]]
+                [^[if applicationSelected == 'General']]
+                  [^[include tmpl="#topic"/]]
+                [[/if]]
+              [[/if]]
+            [[/if]]
+          [[else typeSelected == 'Sales & Account']]
+            [^[include tmpl="#title"/]]
+            [^[include tmpl="#issue"/]]
+          [[else typeSelected == 'Suggestion']]
+            [^[include tmpl="#title"/]]
+            [^[include tmpl="#issue"/]]
+          [[/if]]
+        [[/if]]
+        [^[if (typeSelected && (platformSelected && platformSelected != 'Containers') && applicationSelected && topicSelected)]]
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="goToPage2()">Next</button>
+        [^[else typeSelected == 'Sales & Account']]
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="createPrivate()">Create private case</button>
+        [^[else typeSelected == 'Suggestion']]
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="create()">Create case</button>
+        [^[else topicSelected && platformSelected == 'Containers']]
+            <p>The Bitnami Community for container issues is located on GitHub. You can create a GitHub issue clicking on the button.</p>
+            <button class="button" onclick="cancel()">Cancel</button>
+            <button class="button button-accent" onclick="window.open('https://github.com/bitnami/bitnami-docker-[[:applicationSelected]]/issues/new','_blank')">Create GitHub issue</button>
+        [[else]]
+            <button class="button" onclick="cancel()">Cancel</button>
+        [[/if]]
+      </div>
+    </div>
+  </div>
+</script>

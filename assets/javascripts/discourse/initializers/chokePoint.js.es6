@@ -4,7 +4,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
-    $.get('plugins/bitnami-chokepoint/chokePoint.html', function(value) {
+    $.get('/plugins/bitnami-chokepoint/chokePoint.html', function(value) {
       $('head').append(value);
     });
 

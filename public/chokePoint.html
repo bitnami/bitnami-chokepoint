@@ -220,7 +220,7 @@
             [^[if ~root.applicationSelected == application]]
               <p>The Bitnami Community for container issues is located on GitHub. You can create a GitHub issue clicking on the button.</p>
               <button class="button" onclick="cancel()">Cancel</button>
-              <button class="button button-accent" onclick="window.open('https://github.com/bitnami/bitnami-docker-[[:applicationSelected]]/issues/new','_blank')">Create GitHub issue</button>
+              <button class="button button-accent" onclick="window.open('https://github.com/bitnami/bitnami-docker-[[:~root.applicationSelected]]/issues/new','_blank')">Create GitHub issue</button>
             [[/if]]
           [[/for]]
         [[else]]

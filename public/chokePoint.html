@@ -200,7 +200,7 @@
               [[/if]]
             [[/if]]
           [[else typeSelected == 'Sales & Account']]
-            [^[include tmpl="#helpdesk"]]
+            <p>For sales and account questions, we will help you in our HelpDesk service.</p>
           [[else typeSelected == 'Suggestion']]
             [^[include tmpl="#title"/]]
             [^[include tmpl="#issue"/]]
@@ -211,7 +211,7 @@
           <button class="button button-accent" onclick="goToPage2()">Next</button>
         [^[else typeSelected == 'Sales & Account']]
           <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="createPrivate()">Create private case</button>
+          <button class="button button-accent" onclick="window.open('https://helpdesk.bitnami.com','_blank')">Go to Bitnami HelpDesk</button>
         [^[else typeSelected == 'Suggestion']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="create()">Create case</button>

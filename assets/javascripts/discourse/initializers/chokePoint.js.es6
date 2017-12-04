@@ -284,14 +284,14 @@ export default {
             };
             if (allData.typeSelected === 'How to' || allData.typeSelected === 'Technical issue') {
               if (allData.bnsupportFilled) {
-                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**bnsupport ID:** ${allData.bnsupportFilled}\n**Data:**\n ${allData.textareaFilled}`;
+                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**bnsupport ID:** ${allData.bnsupportFilled}\n**Description:**\n ${allData.textareaFilled}`;
               } else {
-                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Data:**\n ${allData.textareaFilled}`;
+                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
               }
               dataToSend.category = allData.applicationSelected;
               dataToSend.raw = body;
             } else if (allData.typeSelected === 'Suggestion') {
-              body = `**Type:** ${allData.typeSelected}\n**Data:**\n ${allData.textareaFilled}`;
+              body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
               dataToSend.category = 'General';
               dataToSend.raw = body;
             }

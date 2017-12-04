@@ -208,7 +208,7 @@
             [^[include tmpl="#issue"/]]
           [[/if]]
         [[/if]]
-        [^[if (typeSelected && (platformSelected && platformSelected != 'Containers') && applicationSelected && topicSelected)]]
+        [^[if ((typeSelected == 'How to' || typeSelected == 'Technical issue') && (platformSelected && platformSelected != 'Containers') && applicationSelected && topicSelected)]]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="goToPage2()">Next</button>
         [^[else typeSelected == 'Sales & Account']]

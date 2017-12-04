@@ -100,7 +100,7 @@
 
 <script id="issue" type="text/x-jsrender">
   <div>
-    <h4>[[if typeSelected == 'Technical issue']]Description[[else typeSelected == 'How to' || typeSelected == 'Sales & Account']]Describe your question[[else typeSelected == 'Suggestion']]Describe your suggestion[[/if]] here</h4>
+    <h4>[[if typeSelected == 'Technical issue']]Description[[else typeSelected == 'How to' || typeSelected == 'Sales & Account']]Describe your question here[[else typeSelected == 'Suggestion']]Describe your suggestion here[[/if]]</h4>
     <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled"></textarea>
   </div>
   <div class="text-r padding-r-giant">

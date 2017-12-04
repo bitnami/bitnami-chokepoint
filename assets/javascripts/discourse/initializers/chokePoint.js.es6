@@ -150,7 +150,7 @@ export default {
           /**
           * Adapt the search string
           */
-          adaptSearch = function adaptSearch(platform, app, topic) {
+          adaptSearch = function(platform, app, topic) {
             let searchString = '';
             if (platform !== 'Other') {
               if (platform === 'Amazon Web Services') {

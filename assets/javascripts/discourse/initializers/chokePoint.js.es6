@@ -52,6 +52,30 @@ export default {
               applicationArray.sort(propComparator('application'));
             });
 
+          /**
+          * Remove parenthesis and replace slash
+          */
+          adaptSearch = function(platform, app, topic) {
+            var searchString = '';
+            if (platform !== 'Other') {
+              if (platform === 'Amazon Web Services') {
+                platform = 'aws';
+              }
+              searchString += (' ' + platform);
+            }
+
+            if (app !== 'General') {
+              searchString += (' ' + app);
+            }
+
+            if (topic !== 'Other') {
+              searchString += (' ' + topic);
+            }
+
+            searchString = searchString.replace(/\(|\)/g, '').replace(/\//g, ' ');
+            return searchString;
+          };
+
           const typeArray = [
             {
               type: 'How to',
@@ -327,30 +351,6 @@ export default {
           window.goToHelpdesk = function goToHelpdesk() {
             window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new','_blank');
             cancel();
-          };
-
-          /**
-          * Remove parenthesis and replace slash
-          */
-          adaptSearch = function(platform, app, topic) {
-            var searchString = '';
-            if (platform !== 'Other') {
-              if (platform === 'Amazon Web Services') {
-                  platform = 'aws';
-              }
-              searchString += (' ' + platform);
-            }
-
-            if (app !== 'General') {
-              searchString += (' ' + app);
-            }
-
-            if (topic !== 'Other') {
-              searchString += (' ' + topic);
-            }
-
-            searchString = searchString.replace(/\(|\)/g, '').replace(/\//g, ' ');
-            return searchString;
           };
 
           if (!$('#bitnamiContainer').length) {

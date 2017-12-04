@@ -115,7 +115,7 @@
         <h3 class="margin-t-small">Suggested Articles </h3>
         <p class="margin-b-normal">Before continuing, please review if any of these articles answer your question</p>
         <div class="input-group">
-          <input id="search" type="search" placeholder="Search" class="form-control margin-t-small" value="[[if platformSelected != 'Other']][[:platformSelected.replace(/\(|\)/g, '').replace(/\//g, ' ')]][[/if]] [[if applicationSelected != 'General']][[:applicationSelected.replace(/\(|\)/g, '').replace(/\//g, ' ')]][[/if]] [[if topicSelected != 'Other']][[:topicSelected.replace(/\(|\)/g, '').replace(/\//g, ' ')]][[/if]]"/>
+          <input id="search" type="search" placeholder="Search" class="form-control margin-t-small" value="[[:adaptSearch(platformSelected, applicationSelected, topicSelected)]]"/>
           <div class="dropdown dropdown-right filters">
             <button class="button button-dropdown" aria-haspopup="true">All Bitnami sites</button>
             <ul class="dropdown__list remove-style elevation-1 slide-in margin-t-normal" aria-hidden="true" aria-label="submenu">

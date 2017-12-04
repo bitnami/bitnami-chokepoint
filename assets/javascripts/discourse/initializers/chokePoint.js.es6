@@ -126,13 +126,13 @@ export default {
 
           const topicArray = [
             {
-              topic: 'SMTP',
+              topic: 'Email configuration (SMTP)',
             },
             {
               topic: 'Connectivity',
             },
             {
-              topic: 'SSL/HTTPS',
+              topic: 'Secure Connections (SSL/HTTPS)',
             },
             {
               topic: 'Permissions',
@@ -141,7 +141,7 @@ export default {
               topic: 'Credentials',
             },
             {
-              topic: 'DNS',
+              topic: 'Domain Name (DNS)',
             },
             {
               topic: 'Upgrade',
@@ -150,7 +150,7 @@ export default {
 
           const allData = {
             typeSelected: null,
-            typeValues: typeArray.sort(propComparator('type')),
+            typeValues: typeArray,
             platformSelected: null,
             platformValues: platformArray,
             applicationSelected: null,

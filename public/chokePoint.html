@@ -166,12 +166,6 @@
   </div>
 </script>
 
-<script id="helpdesk" type="text/x-jsrender">
-  <p>For sales and account questions, we will help you in our HelpDesk service.</p>
-  <button class="button" onclick="cancel()">Cancel</button>
-  <button class="button button-accent" onclick="window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new','_blank')">Go to Bitnami HelpDesk</button>
-</script>
-
 <script id="mainTpl" type="text/x-jsrender">
   <div id="bitnamiContainer" onmouseover="document.documentElement.style.overflow='hidden';" onmouseout="document.documentElement.style.overflow='auto';" class="container padding-bigger padding-v-normal bg-iron elevation-2">
     <div class="row collapse-b-tablet">
@@ -213,7 +207,7 @@
           <button class="button button-accent" onclick="goToPage2()">Next</button>
         [^[else typeSelected == 'Sales & Account']]
           <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="window.open('https://helpdesk.bitnami.com','_blank')">Go to Bitnami HelpDesk</button>
+          <button class="button button-accent" onclick="window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new','_blank')">Go to Bitnami HelpDesk</button>
         [^[else typeSelected == 'Suggestion']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="create()">Create topic</button>

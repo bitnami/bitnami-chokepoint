@@ -51,31 +51,6 @@ export default {
               });
               applicationArray.sort(propComparator('application'));
             });
-
-          /**
-          * Remove parenthesis and replace slash
-          */
-          adaptSearch = function(platform, app, topic) {
-            var searchString = '';
-            if (platform !== 'Other') {
-              if (platform === 'Amazon Web Services') {
-                platform = 'aws';
-              }
-              searchString += (' ' + platform);
-            }
-
-            if (app !== 'General') {
-              searchString += (' ' + app);
-            }
-
-            if (topic !== 'Other') {
-              searchString += (' ' + topic);
-            }
-
-            searchString = searchString.replace(/\(|\)/g, '').replace(/\//g, ' ');
-            return searchString;
-          };
-
           const typeArray = [
             {
               type: 'How to',
@@ -171,6 +146,30 @@ export default {
               topic: 'Upgrade',
             },
           ];
+
+          /**
+          * Adapt the search string
+          */
+          adaptSearch = function adaptSearch(platform, app, topic) {
+            let searchString = '';
+            if (platform !== 'Other') {
+              if (platform === 'Amazon Web Services') {
+                platform = 'aws';
+              }
+              searchString += (` ${platform}`);
+            }
+
+            if (app !== 'General') {
+              searchString += (` ${app}`);
+            }
+
+            if (topic !== 'Other') {
+              searchString += (` ${topic}`);
+            }
+
+            searchString = searchString.replace(/\(|\)/g, '').replace(/\//g, ' ');
+            return searchString;
+          };
 
           const allData = {
             typeSelected: null,

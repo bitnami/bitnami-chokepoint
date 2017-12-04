@@ -161,6 +161,7 @@ export default {
             bnsupportFilled: null,
             textareaFilled: null,
             currentPage: 1,
+
           };
 
           /**
@@ -282,6 +283,11 @@ export default {
             const dataToSend = {
               title: allData.titleFilled,
             };
+
+            if (!allData.textareaFilled) {
+              allData.textareaFilled = 'Description not provided';
+            }
+
             if (allData.typeSelected === 'How to' || allData.typeSelected === 'Technical issue') {
               if (allData.bnsupportFilled) {
                 body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**bnsupport ID:** ${allData.bnsupportFilled}\n**Description:**\n ${allData.textareaFilled}`;
@@ -312,6 +318,15 @@ export default {
                 text = text.concat('\n\nPlease, fix the issue and try again.');
                 alert(text);
               });
+          };
+
+          /**
+          * Action after click on "Go to Bitnami HelpDesk" button.
+          * Remove the bitnami box and open HelpDesk new case in a new tab
+          */
+          window.goToHelpdesk = function goToHelpdesk() {
+            window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new','_blank');
+            cancel();
           };
 
           if (!$('#bitnamiContainer').length) {

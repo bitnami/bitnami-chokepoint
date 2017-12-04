@@ -101,7 +101,7 @@
 <script id="issue" type="text/x-jsrender">
   <div>
     <h4>[[if typeSelected == 'Technical issue']]Description[[else typeSelected == 'How to' || typeSelected == 'Sales & Account']]Describe your question here[[else typeSelected == 'Suggestion']]Describe your suggestion here[[/if]]</h4>
-    <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled"></textarea>
+    <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled" required></textarea>
   </div>
   <div class="text-r padding-r-giant">
     <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Styling with Markdown is supported</a>
@@ -115,7 +115,7 @@
         <h3 class="margin-t-small">Suggested Articles </h3>
         <p class="margin-b-normal">Before continuing, please review if any of these articles answer your question</p>
         <div class="input-group">
-          <input id="search" type="search" placeholder="Search" class="form-control margin-t-small" value="[[if platformSelected != 'Other']][[:platformSelected]][[/if]] [[if applicationSelected != 'General']][[:applicationSelected]][[/if]] [[if topicSelected != 'Other']][[:topicSelected]][[/if]]"/>
+          <input id="search" type="search" placeholder="Search" class="form-control margin-t-small" value="[[if platformSelected != 'Other']][[:platformSelected.replace(/\(|\)/g, '').replace(/\//g, ' ')]][[/if]] [[if applicationSelected != 'General']][[:applicationSelected.replace(/\(|\)/g, '').replace(/\//g, ' ')]][[/if]] [[if topicSelected != 'Other']][[:topicSelected.replace(/\(|\)/g, '').replace(/\//g, ' ')]][[/if]]"/>
           <div class="dropdown dropdown-right filters">
             <button class="button button-dropdown" aria-haspopup="true">All Bitnami sites</button>
             <ul class="dropdown__list remove-style elevation-1 slide-in margin-t-normal" aria-hidden="true" aria-label="submenu">
@@ -207,7 +207,7 @@
           <button class="button button-accent" onclick="goToPage2()">Next</button>
         [^[else typeSelected == 'Sales & Account']]
           <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new','_blank')">Go to Bitnami HelpDesk</button>
+          <button class="button button-accent" onclick="goToHelpdesk()">Go to Bitnami HelpDesk</button>
         [^[else typeSelected == 'Suggestion']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="create()">Create topic</button>

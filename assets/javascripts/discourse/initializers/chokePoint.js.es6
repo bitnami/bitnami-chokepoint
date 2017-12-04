@@ -11,6 +11,11 @@ export default {
     NavigationDefaultController.reopen({
       actions: {
         createTopic: function() {
+
+          if (disableChokePoint) {
+            return true;
+          }
+
           let info = `${Discourse.User.current().get('username')}`;
           ga('send', 'event', 'SupportCase', 'New', info);
 

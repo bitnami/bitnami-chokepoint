@@ -12,7 +12,7 @@ export default {
       actions: {
         createTopic: function() {
 
-          if (disableChokePoint) {
+          if (typeof disableChokePoint !== 'undefined' && disableChokePoint) {
             return true;
           }
 

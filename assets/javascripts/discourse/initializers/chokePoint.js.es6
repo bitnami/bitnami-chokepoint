@@ -90,6 +90,9 @@ export default {
                   subplatform: '1&1',
                 },
                 {
+                  subplatform: 'Huawei Cloud',
+                },
+                {
                   subplatform: 'Open Telekom Cloud',
                 },
               ],

@@ -308,6 +308,7 @@ export default {
             let body;
             const dataToSend = {
               title: allData.titleFilled,
+              typing_duration_msecs: 5000,
             };
 
             if (!allData.textareaFilled) {

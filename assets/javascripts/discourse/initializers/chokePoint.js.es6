@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 const NavigationDefaultController = require('discourse/controllers/navigation/default').default;
 
 export default {
@@ -73,27 +72,35 @@ export default {
               subplatforms: [
                 {
                   subplatform: 'Google Cloud Platform',
+                  query: 'Google',
                 },
                 {
                   subplatform: 'Amazon Web Services',
+                  query: 'AWS OR Amazon',
                 },
                 {
                   subplatform: 'Microsoft Azure',
+                  query: 'Azure OR Microsoft',
                 },
                 {
                   subplatform: 'Oracle Cloud Platform',
+                  query: 'Oracle',
                 },
                 {
                   subplatform: 'Century Link',
+                  query: 'CenturyLink',
                 },
                 {
                   subplatform: '1&1',
+                  query: '1and1',
                 },
                 {
                   subplatform: 'Huawei Cloud',
+                  query: 'Huawei',
                 },
                 {
                   subplatform: 'Open Telekom Cloud',
+                  query: 'Telekom',
                 },
               ],
             },
@@ -106,13 +113,13 @@ export default {
               subtype: true,
               subplatforms: [
                 {
-                  subplatform: 'Windows Installer',
+                  subplatform: 'Windows',
                 },
                 {
-                  subplatform: 'OS X Installer',
+                  subplatform: 'OS X',
                 },
                 {
-                  subplatform: 'Linux Installer',
+                  subplatform: 'Linux',
                 },
               ],
             },
@@ -129,24 +136,31 @@ export default {
           const topicArray = [
             {
               topic: 'Email configuration (SMTP)',
+              query: 'smtp OR mail OR email',
             },
             {
               topic: 'Connectivity',
+              query: 'SSH OR Tunnel OR FTP',
             },
             {
               topic: 'Secure Connections (SSL/HTTPS)',
+              query: 'ssl OR tls OR https',
             },
             {
               topic: 'Permissions',
+              query: 'permissions OR plugin OR upload Or install',
             },
             {
               topic: 'Credentials',
+              query: 'login OR credentials OR password OR frequently',
             },
             {
               topic: 'Domain Name (DNS)',
+              query: 'dns OR domain',
             },
             {
               topic: 'Upgrade',
+              query: 'upgrade OR update OR migrate',
             },
           ];
 
@@ -155,22 +169,21 @@ export default {
           */
           window.adaptSearch = function adaptSearch(platform, app, topic) {
             let searchString = '';
+
+            if (topic !== 'Other') {
+              const topicQuery = _.filter(topicArray, {topic: topic})[0].query;
+              searchString += (`${topicQuery}`);
+            }
+
             if (platform !== 'Other') {
-              if (platform === 'Amazon Web Services') {
-                platform = 'aws';
-              }
-              searchString += (` ${platform}`);
+              const platformQuery = _.filter(_.filter(platformArray, {platform: 'Clouds'})[0].subplatforms, {subplatform: platform})[0].query;
+              searchString += (` OR ${platformQuery}`);
             }
 
             if (app !== 'General') {
-              searchString += (` ${app}`);
+              searchString += (` OR ${app}`);
             }
 
-            if (topic !== 'Other') {
-              searchString += (` ${topic}`);
-            }
-
-            searchString = searchString.replace(/\(|\)/g, '').replace(/\//g, ' ');
             return searchString;
           };
 

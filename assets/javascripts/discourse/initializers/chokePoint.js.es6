@@ -136,15 +136,15 @@ export default {
           const topicArray = [
             {
               topic: 'Email configuration (SMTP)',
-              query: 'smtp OR mail OR email',
+              query: 'SMTP OR mail OR email',
             },
             {
-              topic: 'Connectivity',
-              query: 'SSH OR Tunnel OR FTP',
+              topic: 'Connectivity (SSH/FTP)',
+              query: 'SSH OR tunnel OR FTP',
             },
             {
               topic: 'Secure Connections (SSL/HTTPS)',
-              query: 'ssl OR tls OR https',
+              query: 'SSL OR tls OR HTTPS',
             },
             {
               topic: 'Permissions',
@@ -156,7 +156,7 @@ export default {
             },
             {
               topic: 'Domain Name (DNS)',
-              query: 'dns OR domain',
+              query: 'DNS OR domain',
             },
             {
               topic: 'Upgrade',

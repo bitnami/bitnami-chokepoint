@@ -10,12 +10,6 @@ export default {
     NavigationDefaultController.reopen({
       actions: {
         createTopic: function() {
-          /**
-            To disable chokepoint without redploy:
-              <script>
-                const disableChokePoint = true;
-              </script>
-           */
           if (typeof disableChokePoint !== 'undefined' && disableChokePoint) {
             return true;
           }
@@ -81,7 +75,6 @@ export default {
           const platformArray = [
             {
               platform: 'Clouds',
-              subtype: true,
               subplatforms: [
                 {
                   subplatform: 'Google Cloud Platform',
@@ -119,11 +112,9 @@ export default {
             },
             {
               platform: 'Virtual Machines',
-              subtype: false,
             },
             {
               platform: 'Installers',
-              subtype: true,
               subplatforms: [
                 {
                   subplatform: 'Windows',
@@ -138,11 +129,9 @@ export default {
             },
             {
               platform: 'Containers',
-              subtype: false,
             },
             {
               platform: 'Other',
-              subtype: false,
             },
           ];
 
@@ -189,7 +178,10 @@ export default {
             }
 
             if (platform !== 'Other') {
-              const platformQuery = _.filter(_.filter(platformArray, {platform: 'Clouds'})[0].subplatforms, {subplatform: platform})[0].query;
+              const platformQuery = platform;
+              if (platform !== 'Virtual Machines' && platform !== 'Windows' && platform !== 'OS X' && platform !== 'Linux') {
+                platformQuery = _.filter(_.filter(platformArray, {platform: 'Clouds'})[0].subplatforms, {subplatform: platform})[0].query;
+              }
               searchString += (` OR ${platformQuery}`);
             }
 

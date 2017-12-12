@@ -178,7 +178,7 @@ export default {
             }
 
             if (platform !== 'Other') {
-              const platformQuery = platform;
+              let platformQuery = platform;
               if (platform !== 'Virtual Machines' && platform !== 'Windows' && platform !== 'OS X' && platform !== 'Linux') {
                 platformQuery = _.filter(_.filter(platformArray, {platform: 'Clouds'})[0].subplatforms, {subplatform: platform})[0].query;
               }

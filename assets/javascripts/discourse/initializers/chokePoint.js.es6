@@ -10,15 +10,25 @@ export default {
     NavigationDefaultController.reopen({
       actions: {
         createTopic: function() {
-
+          /**
+            To disable chokepoint without redploy:
+              <script>
+                const disableChokePoint = true;
+              </script>
+           */
           if (typeof disableChokePoint !== 'undefined' && disableChokePoint) {
             return true;
           }
 
+          // Google analytics variables
+          let d;
+          let eventDate;
+          let info;
+
           if (!Discourse.User.current().staff) {
-            let d = new Date();
-            let eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
-            let info = `[${eventDate}] ${Discourse.User.current().get('username')}`;
+            d = new Date();
+            eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
+            info = `[${eventDate}] ${Discourse.User.current().get('username')}`;
             ga('send', 'event', 'SupportCase', 'New', info);
           }
 
@@ -40,7 +50,6 @@ export default {
           const communityURL = window.location.origin;
 
           // Obtains application name dinamically from discourse categories
-          // TODO: Check application before show next select
           const applicationArray = [];
           $.get(`${communityURL}/categories.json`)
             .done(function(data) {
@@ -221,7 +230,7 @@ export default {
                 ga('send', 'event', 'SupportCase', 'Solved', info);
               }
             }
-            document.documentElement.style.overflow='auto';
+            document.documentElement.style.overflow = 'auto';
             if ($('.bitnami-b').length) $('.bitnami-b').remove();
           };
 
@@ -320,7 +329,6 @@ export default {
           * Show different textarea asking for information before creating the case
           */
           window.goToPage3 = function goToPage3() {
-            // TODO: Fix scroll
             allData.currentPage = 3;
             const page3 = $.templates('#explanationCase');
             page3.link('#bitnamiContainer', allData);
@@ -381,7 +389,7 @@ export default {
           * Remove the bitnami box and open HelpDesk new case in a new tab
           */
           window.goToHelpdesk = function goToHelpdesk() {
-            window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new','_blank');
+            window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new', '_blank');
             cancel();
           };
 

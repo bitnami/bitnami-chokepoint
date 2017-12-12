@@ -15,8 +15,12 @@ export default {
             return true;
           }
 
-          let info = `${Discourse.User.current().get('username')}`;
-          ga('send', 'event', 'SupportCase', 'New', info);
+          if (!Discourse.User.current().staff) {
+            let d = new Date();
+            let eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
+            let info = `[${eventDate}] ${Discourse.User.current().get('username')}`;
+            ga('send', 'event', 'SupportCase', 'New', info);
+          }
 
           // Change default delimiters
           $.views.settings.delimiters('[[', ']]', '^');
@@ -210,8 +214,12 @@ export default {
           window.cancel = function cancel() {
             // If the the user click on "YES" when he is asking for the solution -> He found the solution
             if (allData.currentPage === 2) {
-              info = `${Discourse.User.current().get('username')}`;
-              ga('send', 'event', 'SupportCase', 'Solved', info);
+              if (!Discourse.User.current().staff) {
+                d = new Date();
+                eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
+                info = `[${eventDate}] ${Discourse.User.current().get('username')}`;
+                ga('send', 'event', 'SupportCase', 'Solved', info);
+              }
             }
             document.documentElement.style.overflow='auto';
             if ($('.bitnami-b').length) $('.bitnami-b').remove();
@@ -281,8 +289,12 @@ export default {
                 useHistory: false,
                 onSearch: function(search) {
                   delay(function() {
-                    info = `${Discourse.User.current().get('username')} : ${search}`;
-                    ga('send', 'event', 'SupportCase', 'Search', info);
+                    if (!Discourse.User.current().staff) {
+                      d = new Date();
+                      eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
+                      info = `[${eventDate}] ${Discourse.User.current().get('username')} : ${search}`;
+                      ga('send', 'event', 'SupportCase', 'Search', info);
+                    }
                   }, 2500);
                 },
               }
@@ -347,8 +359,12 @@ export default {
                 cancel();
                 const caseURL = `${communityURL}/t/${data.topic_slug}/${data.topic_id}`;
                 window.location.replace(caseURL);
-                info = `${Discourse.User.current().get('username')} : ${caseURL}`;
-                ga('send', 'event', 'SupportCase', 'Create', info);
+                if (!Discourse.User.current().staff) {
+                  d = new Date();
+                  eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
+                  info = `[${eventDate}] ${Discourse.User.current().get('username')} : ${caseURL}`;
+                  ga('send', 'event', 'SupportCase', 'Create', info);
+                }
               })
               .fail(function(xhr) {
                 let text = 'Case not created due to:';

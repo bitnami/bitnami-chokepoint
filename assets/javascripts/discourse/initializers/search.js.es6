@@ -477,8 +477,12 @@ export default {
       });
 
       $(document).on('click', '.search__results__result a', function() {
-        const info = `${Discourse.User.current().get('username')} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
-        ga('send', 'event', 'SupportCase', 'SearchResult', info);
+        if (!Discourse.User.current().staff) {
+          const d = new Date();
+          const eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
+          const info = `[${eventDate}] ${Discourse.User.current().get('username')} : ${currentSearch} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
+          ga('send', 'event', 'SupportCase', 'SearchResult', info);
+        }
       });
 
       // Check if the form already are prefilled

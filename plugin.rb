@@ -10,12 +10,14 @@ register_asset "javascripts/discourse/initializers/search.js.es6"
 gem 'inflection', '1.0.0'
 gem 'zendesk_api', '1.16.0'
 
-module ::DiscourseZendeskPlugin::Helper
-  def zendesk_client
-    client = ZendeskAPI::Client.new do |config|
-      config.url      = SiteSetting.zendesk_url
-      config.username = SiteSetting.zendesk_username
-      config.token    = SiteSetting.zendesk_token
+module ::DiscourseZendeskPlugin
+  module Helper
+    def zendesk_client
+      client = ZendeskAPI::Client.new do |config|
+        config.url      = SiteSetting.zendesk_url
+        config.username = SiteSetting.zendesk_username
+        config.token    = SiteSetting.zendesk_token
+      end
     end
   end
 end

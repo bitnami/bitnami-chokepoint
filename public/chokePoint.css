@@ -11,6 +11,10 @@
     transform: translateX(-50%) !important;
 }
 
+.reply-as-new-topic {
+  display: none;
+}
+
 .bitnami-b {
     margin: auto !important;
 }

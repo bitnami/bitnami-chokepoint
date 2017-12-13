@@ -1,0 +1,10 @@
+plugins:
+  zendesk_url:
+    default: null
+    type: string
+  zendesk_username:
+    default: null
+    type: string
+  zendesk_token:
+    default: null
+    type: string

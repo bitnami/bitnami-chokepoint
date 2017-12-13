@@ -1,0 +1,5 @@
+en:
+  site_settings:
+    zendesk_url: 'Your zendesk url. e.g https://YOUR_SUBDOMAIN.zendesk.com/api/v2'
+    zendesk_username: 'Email to use for Zendesk Authentiation when autogenerating tickets'
+    zendesk_token: 'API Token for Zendesk Authentication when autogenerating ticket'

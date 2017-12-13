@@ -326,6 +326,17 @@ export default {
             page3.link('#bitnamiContainer', allData);
           };
 
+          createZendeskIssue() {
+            ajax('/zendesk-plugin/issues', {
+              type: "POST",
+              data: {
+                subject: '[TESTING] This is a test',
+                comment: 'This is a test'
+            }});
+
+            cancel();
+          }
+
           /**
           * Create case using introduced data
           */

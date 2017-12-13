@@ -5,3 +5,37 @@
 
 register_asset "javascripts/discourse/initializers/chokePoint.js.es6"
 register_asset "javascripts/discourse/initializers/search.js.es6"
+
+# Require gems
+gem 'inflection', '1.0.0'
+gem 'zendesk_api', '1.14.4'
+gem 'colorize', '0.8.1'
+gem 'httplog', '0.99.7'
+
+module ::DiscourseZendeskPlugin::Helper
+  def zendesk_client
+    client = ZendeskAPI::Client.new do |config|
+      config.url      = SiteSetting.zendesk_url
+      config.username = SiteSetting.zendesk_username
+      config.token    = SiteSetting.zendesk_token
+    end
+  end
+end
+
+Discourse::Application.routes.append do
+  post '/zendesk-plugin/issues' => 'discourse_zendesk_plugin/issue#create'
+end
+
+after_initialize do
+  class ::DiscourseZendeskPlugin::IssueController < ::ApplicationController
+    include DiscourseZendeskPlugin::Helper
+    def create
+      zendesk_client.tickets.create(
+        subject: '[TESTING] This is a test',
+        comment: { value: 'This is a test' },
+        submitter_id: 'zendesk@bitnami.com',
+      )
+      render json: topic
+    end
+  end
+end

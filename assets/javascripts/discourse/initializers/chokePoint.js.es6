@@ -1,4 +1,5 @@
 const NavigationDefaultController = require('discourse/controllers/navigation/default').default;
+import { ajax } from 'discourse/lib/ajax';
 
 export default {
   name: 'chokepoint',

@@ -7,8 +7,7 @@ register_asset "javascripts/discourse/initializers/chokePoint.js.es6"
 register_asset "javascripts/discourse/initializers/search.js.es6"
 
 # Require gems
-gem 'inflection', '1.0.0'
-gem 'zendesk_api', '1.16.0'
+require 'zendesk_api'
 
 module ::DiscourseZendeskPlugin
   module Helper

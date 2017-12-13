@@ -8,9 +8,7 @@ register_asset "javascripts/discourse/initializers/search.js.es6"
 
 # Require gems
 gem 'inflection', '1.0.0'
-gem 'zendesk_api', '1.14.4'
-gem 'colorize', '0.8.1'
-gem 'httplog', '0.99.7'
+gem 'zendesk_api', '1.16.0'
 
 module ::DiscourseZendeskPlugin::Helper
   def zendesk_client

@@ -23,7 +23,7 @@ module ::DiscourseZendeskPlugin
 end
 
 Discourse::Application.routes.append do
-  post '/zendesk-plugin/issues' => 'discourse_zendesk_plugin/issue#create'
+  post '/bitnami-chokepoint/issues' => 'discourse_zendesk_plugin/issue#create'
 end
 
 after_initialize do

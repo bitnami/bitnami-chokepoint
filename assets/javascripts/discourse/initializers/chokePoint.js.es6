@@ -328,7 +328,7 @@ export default {
           };
 
           window.createZendeskIssue = function createZendeskIssue() {
-            ajax('/zendesk-plugin/issues', {
+            ajax('/bitnami-chokepoint/issues', {
               type: 'POST',
               data: {
                 subject: '[TESTING] This is a test',

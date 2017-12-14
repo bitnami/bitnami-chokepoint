@@ -30,10 +30,10 @@ after_initialize do
   class ::DiscourseZendeskPlugin::IssueController < ::ApplicationController
     include DiscourseZendeskPlugin::Helper
     def create
-      zendesk_client.tickets.create(
-        subject: '[TESTING] This is a test',
-        comment: { value: 'This is a test' },
-        submitter_id: 'zendesk@bitnami.com',
+      zendesk_client.tickets.create!(
+        :subject => params(:subject),
+        :comment => { :value => params(:comment) },
+        :submitter_id => params(:submitter_id)
       )
     end
   end

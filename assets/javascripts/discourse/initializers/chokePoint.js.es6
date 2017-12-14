@@ -328,6 +328,7 @@ export default {
           };
 
           window.createZendeskIssue = function createZendeskIssue() {
+            console.log('AJAX request');
             ajax('/zendesk-plugin/issues', {
               type: 'POST',
               data: {

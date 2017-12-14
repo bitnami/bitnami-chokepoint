@@ -33,7 +33,7 @@ after_initialize do
       zendesk_client.tickets.create(
         subject: '[crhernandez] Testing new user',
         comment: {body: 'The smoke is very colorful.'},
-        requester: {locale_id: 1, name: 'Pablo', email: 'pablito@example.org'}}
+        requester: {locale_id: 1, name: 'Pablo', email: 'pablito@example.org'}
       )
     end
   end

@@ -10,7 +10,7 @@ register_asset "javascripts/discourse/initializers/search.js.es6"
 gem 'inflection', '1.0.0'
 gem 'zendesk_api', '1.16.0'
 
-module ::BitnamiChokepoint
+module ::DiscourseZendeskPlugin
   module Helper
     def zendesk_client
       client = ZendeskAPI::Client.new do |config|
@@ -23,12 +23,12 @@ module ::BitnamiChokepoint
 end
 
 Discourse::Application.routes.append do
-  post '/bitnami-chokepoint/issues' => 'discourse_zendesk_plugin/issue#create'
+  post '/zendesk-plugin/issues' => 'discourse_zendesk_plugin/issue#create'
 end
 
 after_initialize do
-  class ::BitnamiChokepoint::IssueController < ::ApplicationController
-    include BitnamiChokepoint::Helper
+  class ::DiscourseZendeskPlugin::IssueController < ::ApplicationController
+    include DiscourseZendeskPlugin::Helper
     def create
       zendesk_client.tickets.create(
         subject: '[TESTING] This is a test',

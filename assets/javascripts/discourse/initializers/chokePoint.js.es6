@@ -333,6 +333,7 @@ export default {
               data: {
                 subject: '[TESTING] This is a test',
                 comment: 'This is a test',
+                submitter_id: 'zendesk@bitnami.com',
               },
             });
 

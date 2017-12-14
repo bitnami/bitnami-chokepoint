@@ -1,0 +1,31 @@
+<h2>Zendesk Configuration</h2>
+<hr>
+<h3>Username</h3>
+<div>
+  {{text-field value=zendeskUsername}}
+  {{setting-validation-message message=validationMessage}}
+</div>
+<h3>Token</h3>
+<div>
+  {{password-field value=zendeskToken}}
+  {{setting-validation-message message=validationMessage}}
+</div>
+{{d-button label="admin.zendesk.settings.save_button"
+           action="save"
+           icon="check"
+           disabled=dirty}}
+{{#if notEmpty }}
+{{d-button label="admin.zendesk.settings.reset_button"
+           action="reset"
+           icon="refresh"}}
+{{/if}}
+<hr>
+{{#if zendeskUrl}}
+  {{i18n 'zendesk.current_url' url=zendeskUrl}}
+{{else}}
+  {{i18n 'zendesk.url_not_set'}}
+{{/if}}
+Set url in
+{{#link-to 'adminSiteSettingsCategory' 'plugins'}}
+  {{i18n 'admin.site_settings.title'}}
+{{/link-to}}

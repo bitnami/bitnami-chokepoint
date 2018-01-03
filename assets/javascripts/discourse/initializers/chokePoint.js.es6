@@ -15,14 +15,10 @@ export default {
           }
 
           // Google analytics variables
-          let d;
-          let eventDate;
           let info;
 
           if (!Discourse.User.current().staff) {
-            d = new Date();
-            eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
-            info = `[${eventDate}] ${Discourse.User.current().get('username')}`;
+            info = `${Discourse.User.current().get('username')}`;
             ga('send', 'event', 'SupportCase', 'New', info);
           }
 
@@ -216,9 +212,7 @@ export default {
             // If the the user click on "YES" when he is asking for the solution -> He found the solution
             if (allData.currentPage === 2) {
               if (!Discourse.User.current().staff) {
-                d = new Date();
-                eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
-                info = `[${eventDate}] ${Discourse.User.current().get('username')}`;
+                info = `${Discourse.User.current().get('username')}`;
                 ga('send', 'event', 'SupportCase', 'Solved', info);
               }
             }
@@ -291,9 +285,7 @@ export default {
                 onSearch: function(search) {
                   delay(function() {
                     if (!Discourse.User.current().staff) {
-                      d = new Date();
-                      eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
-                      info = `[${eventDate}] ${Discourse.User.current().get('username')} : ${search}`;
+                      info = `${Discourse.User.current().get('username')} : ${search}`;
                       ga('send', 'event', 'SupportCase', 'Search', info);
                     }
                   }, 2500);
@@ -360,9 +352,7 @@ export default {
                 const caseURL = `${communityURL}/t/${data.topic_slug}/${data.topic_id}`;
                 window.location.replace(caseURL);
                 if (!Discourse.User.current().staff) {
-                  d = new Date();
-                  eventDate = `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()} ${d.getUTCHours()}:${d.getUTCMinutes()}:${d.getUTCSeconds()}.${d.getUTCMilliseconds()}`;
-                  info = `[${eventDate}] ${Discourse.User.current().get('username')} : ${caseURL}`;
+                  info = `${Discourse.User.current().get('username')} : ${caseURL}`;
                   ga('send', 'event', 'SupportCase', 'Create', info);
                 }
               })

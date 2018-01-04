@@ -172,7 +172,11 @@ export default {
 
             if (topic !== 'Other') {
               const topicQuery = _.filter(topicArray, {topic: topic})[0].query;
-              searchString += (`${topicQuery} OR `);
+              if (platform !== 'Other' || app !== 'Other') {
+                searchString += (`${topicQuery} OR `);
+              } else {
+                searchString += (`${topicQuery}`);
+              }
             }
 
             if (platform !== 'Other') {

@@ -476,7 +476,8 @@ export default {
         loadResults(currentSearch, 1, true, true);
       });
 
-      $(document).one('click', '.search__results__result a', function() {
+      $(document).off('click', '.search__results__result a');
+      $(document).on('click', '.search__results__result a', function() {
         const info = `${Discourse.User.current().get('username')} : ${currentSearch} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
         if (!Discourse.User.current().staff) {
           ga('send', 'event', 'SupportCase', 'SearchResult', info);

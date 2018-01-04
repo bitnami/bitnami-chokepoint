@@ -184,7 +184,7 @@ export default {
             }
 
             if (app !== 'General') {
-              if (platform !== 'Other') {
+              if (platform !== 'Other' || topic !== 'Other') {
                 searchString += (` OR ${app}`);
               } else {
                 searchString += (`${app}`);

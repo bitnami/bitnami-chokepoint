@@ -476,9 +476,9 @@ export default {
         loadResults(currentSearch, 1, true, true);
       });
 
-      $(document).off('click', '.search__results__result a');
-      $(document).on('click', '.search__results__result a', function() {
-        const info = `${Discourse.User.current().get('username')} : ${currentSearch} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
+      $(document).off('click', '.search__results__result a').on('click', '.search__results__result a', function() {
+        d = new Date();
+        const info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')} : ${currentSearch} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
         if (!Discourse.User.current().staff) {
           ga('send', 'event', 'SupportCase', 'SearchResult', info);
         } else {

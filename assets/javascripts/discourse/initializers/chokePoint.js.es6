@@ -17,7 +17,8 @@ export default {
           // Google analytics variables
           let info;
 
-          info = `${Discourse.User.current().get('username')}`;
+          d = new Date();
+          info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')}`;
           if (!Discourse.User.current().staff) {
             ga('send', 'event', 'SupportCase', 'New', info);
           } else {
@@ -169,30 +170,42 @@ export default {
           */
           window.adaptSearch = function adaptSearch(platform, app, topic) {
             let searchString = '';
+            let topicQuery = '';
+            let platformQuery = '';
+            let appQuery = '';
 
             if (topic !== 'Other') {
-              const topicQuery = _.filter(topicArray, {topic: topic})[0].query;
-              if (platform !== 'Other' || app !== 'Other') {
-                searchString += (`${topicQuery} OR `);
-              } else {
-                searchString += (`${topicQuery}`);
-              }
+              topicQuery = _.filter(topicArray, {topic: topic})[0].query;
             }
 
             if (platform !== 'Other') {
-              let platformQuery = platform;
               if (platform !== 'Virtual Machines' && platform !== 'Windows' && platform !== 'OS X' && platform !== 'Linux') {
                 platformQuery = _.filter(_.filter(platformArray, {platform: 'Clouds'})[0].subplatforms, {subplatform: platform})[0].query;
+              } else {
+                platformQuery = platform;
               }
-              searchString += (`${platformQuery}`);
             }
 
             if (app !== 'General') {
-              if (platform !== 'Other' || topic !== 'Other') {
-                searchString += (` OR ${app}`);
-              } else {
-                searchString += (`${app}`);
+              appQuery = app;
+            }
+
+            searchString = topicQuery;
+
+            if (searchString) {
+              if (platformQuery) {
+                searchString += ` OR ${platformQuery}`;
               }
+            } else {
+              searchString += `${platformQuery}`;
+            }
+
+            if (searchString) {
+              if (appQuery) {
+                searchString += ` OR ${appQuery}`;
+              }
+            } else {
+              searchString += `${appQuery}`;
             }
 
             return searchString;
@@ -221,7 +234,8 @@ export default {
           window.cancel = function cancel() {
             // If the the user click on "YES" when he is asking for the solution -> He found the solution
             if (allData.currentPage === 2) {
-              info = `${Discourse.User.current().get('username')}`;
+              d = new Date();
+              info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')}`;
               if (!Discourse.User.current().staff) {
                 ga('send', 'event', 'SupportCase', 'Solved', info);
               } else {
@@ -296,7 +310,8 @@ export default {
                 useHistory: false,
                 onSearch: function(search) {
                   delay(function() {
-                    info = `${Discourse.User.current().get('username')} : ${search}`;
+                    d = new Date();
+                    info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')} : ${search}`;
                     if (!Discourse.User.current().staff) {
                       ga('send', 'event', 'SupportCase', 'Search', info);
                     } else {
@@ -363,7 +378,8 @@ export default {
             $.post(`${communityURL}/posts`, dataToSend)
               .done(function(data) {
                 const caseURL = `${communityURL}/t/${data.topic_slug}/${data.topic_id}`;
-                info = `${Discourse.User.current().get('username')} : ${caseURL}`;
+                d = new Date();
+                info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')} : ${caseURL}`;
                 if (!Discourse.User.current().staff) {
                   ga('send', 'event', 'SupportCase', 'Create', info);
                 } else {
@@ -377,7 +393,8 @@ export default {
                 JSON.parse(xhr.responseText).errors.forEach(function(errormsg) {
                   text = text.concat('\n\t- ', errormsg);
                 });
-                info = `${Discourse.User.current().get('username')} : ${text}`;
+                d = new Date();
+                info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')} : ${text}`;
                 if (!Discourse.User.current().staff) {
                   ga('send', 'event', 'SupportCase', 'Failure', info);
                 } else {

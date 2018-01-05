@@ -477,7 +477,7 @@ export default {
       });
 
       $(document).off('click', '.search__results__result a').on('click', '.search__results__result a', function() {
-        d = new Date();
+        const d = new Date();
         const info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('username')} : ${currentSearch} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
         if (!Discourse.User.current().staff) {
           ga('send', 'event', 'SupportCase', 'SearchResult', info);

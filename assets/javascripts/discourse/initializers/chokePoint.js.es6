@@ -15,6 +15,7 @@ export default {
           }
 
           // Google analytics variables
+          let d ;
           let info;
 
           d = new Date();

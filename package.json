@@ -1,0 +1,15 @@
+{
+  "name": "chokepoint",
+  "version": "1.0.0",
+  "description": "chokepoint",
+  "devDependencies": {
+    "eslint": "",
+    "eslint-config-airbnb-base": "",
+    "eslint-plugin-import": ""
+  },
+  "keywords": [
+    "chokepoint"
+  ],
+  "author": "Bitnami",
+  "license": "COMMERCIAL"
+}

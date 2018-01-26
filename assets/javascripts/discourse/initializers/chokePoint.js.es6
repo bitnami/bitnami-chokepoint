@@ -86,19 +86,19 @@ export default {
       topicArray: [
         {
           topic: 'Email configuration (SMTP)',
-          query: 'SMTP OR mail OR email',
+          query: 'SMTP OR mail OR email OR Troubleshoot',
         },
         {
           topic: 'Connectivity (SSH/FTP)',
-          query: 'SSH OR tunnel OR FTP',
+          query: 'SSH OR tunnel OR FTP OR Troubleshoot',
         },
         {
           topic: 'Secure Connections (SSL/HTTPS)',
-          query: 'SSL OR tls OR HTTPS',
+          query: 'SSL OR tls OR HTTPS OR Troubleshoot',
         },
         {
           topic: 'Permissions',
-          query: 'permissions OR plugin OR upload Or install',
+          query: 'permissions OR plugin OR upload Or install OR Troubleshoot',
         },
         {
           topic: 'Credentials',

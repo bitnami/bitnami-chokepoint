@@ -3,6 +3,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
+    const version = '1.0.1';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -139,7 +140,7 @@ export default {
       try {
         const d = new Date();
         const date = `${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
-        let info = `[${date}] ${Discourse.User.current().get('username')}`;
+        let info = `[${date}] ${version} ${Discourse.User.current().get('username')}`;
         if (extraInfo) info += ` : ${extraInfo}`;
 
         if (!Discourse.User.current().staff) {
@@ -148,7 +149,14 @@ export default {
           console.log(info);
         }
       } catch (e) {
-        if (Discourse.User.current().staff) console.log('Error generating google analytics event');
+        const d = new Date();
+        const date = `${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
+        const info = `[${date}] ${version} ${Discourse.User.current().get('username')} ${e} ${navigator.userAgent}`;
+        if (!Discourse.User.current().staff) {
+          ga('send', 'event', 'SupportCase', 'Failure', info);
+        } else {
+          console.log(info);
+        }
       }
     }
 
@@ -170,7 +178,7 @@ export default {
         if ((typeof disableChokePoint !== 'undefined' && disableChokePoint) || !showChokePoint) {
           return true;
         }
-
+        // Generate New event when click on New Topic
         generateEvent('New');
 
         // Change default delimiters
@@ -238,6 +246,7 @@ export default {
         */
         window.cancel = function cancel() {
           // If the the user click on "YES" when he is asking for the solution -> He found the solution
+          // Generate Solved event when the user found the solution
           if (allData.currentPage === 2) generateEvent('Solved');
 
           document.documentElement.style.overflow = 'auto';
@@ -308,6 +317,7 @@ export default {
               useHistory: false,
               onSearch: function(search) {
                 delay(function() {
+                  // Generate Search event when the user modify the search box (also the first time)
                   generateEvent('Search', search);
                 }, 2500);
               },
@@ -365,22 +375,35 @@ export default {
             dataToSend.raw = body;
           }
 
+          // Generate SendPost event before send post message
+          generateEvent('SendPost');
           $.post(`${communityURL}/posts`, dataToSend)
             .done(function(data) {
-              const caseURL = `${communityURL}/t/${data.topic_slug}/${data.topic_id}`;
-              generateEvent('Create', caseURL);
-              cancel();
-              window.location.replace(caseURL);
+              try {
+                const caseURL = `${communityURL}/t/${data.topic_slug}/${data.topic_id}`;
+                // Generate Create event when the post returns 200 and the case is created
+                generateEvent('Create', caseURL);
+                cancel();
+                window.location.replace(caseURL);
+              } catch (e) {
+                // Generate Failure event due to a fail inside done callback
+                generateEvent('Failure', `${e} : ${navigator.userAgent}`);
+              }
             })
             .fail(function(xhr) {
-              // Error creating case
-              let text = 'Case not created due to:\n';
-              JSON.parse(xhr.responseText).errors.forEach(function(errormsg) {
-                text = text.concat(' - ', errormsg, '\n');
-              });
-              generateEvent('Failure', `${text} : ${navigator.userAgent}`);
-              text = text.concat('\nPlease, fix the issue and try again.');
-              alert(text);
+              try {
+                let text = 'Case not created due to:\n';
+                JSON.parse(xhr.responseText).errors.forEach(function(errormsg) {
+                  text = text.concat(' - ', errormsg, '\n');
+                });
+                // Generate Failure event due to a fail in the Discourse tests (title, content, category, etc)
+                generateEvent('Failure', `${text} : ${navigator.userAgent}`);
+                text = text.concat('\nPlease, fix the issue and try again.');
+                alert(text);
+              } catch (e) {
+                // Generate Failure event due to a fail inside fail callback
+                generateEvent('Failure', `${e} : ${navigator.userAgent}`);
+              }
             });
         };
 
@@ -400,7 +423,7 @@ export default {
         }
         return false;
       } catch (e) {
-        // Error chokePoint JS code
+        // Generate Failure event due to a fail in the JS chokepoint code
         generateEvent('Failure', `${e} : ${navigator.userAgent}`);
         return true;
       }
@@ -449,9 +472,9 @@ export default {
                         withoutChokepoint(e);
                       }
                     })
-                    .fail(function(xhr) {
+                    .fail(function() {
                       // Error dowloading categories
-                      withoutChokepoint(JSON.parse(xhr.responseText).errors);
+                      withoutChokepoint('Error downloading categories');
                     });
                 });
               } catch (e) {
@@ -459,9 +482,9 @@ export default {
                 withoutChokepoint(e);
               }
             })
-            .fail(function(xhr) {
+            .fail(function() {
               // Error downloading html
-              withoutChokepoint(JSON.parse(xhr.responseText).errors);
+              withoutChokepoint('Error downloading html');
             });
         } catch (e) {
           // Error before chokePoint appears

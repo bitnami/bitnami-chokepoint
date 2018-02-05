@@ -3,7 +3,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.1';
+    const version = 'v1.0.2';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -20,6 +20,9 @@ export default {
         },
         {
           type: 'Sales & Account',
+        },
+        {
+          type: 'Stacksmith',
         },
       ],
       platformArray: [
@@ -419,6 +422,15 @@ export default {
         */
         window.goToHelpdesk = function goToHelpdesk() {
           window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new', '_blank');
+          cancel();
+        };
+
+        /**
+        * Action after click on "Go to Bitnami Stacksmith Support page" button.
+        * Remove the bitnami box and open Stacksmith Support page in a new tab
+        */
+        window.goToStacksmith = function goToStacksmith() {
+          window.open('https://stacksmith.bitnami.com/support', '_blank');
           cancel();
         };
 

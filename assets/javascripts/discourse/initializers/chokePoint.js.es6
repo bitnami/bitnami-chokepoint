@@ -206,6 +206,7 @@ export default {
           }
 
           if (app !== 'General') appQuery = app;
+          if (app === 'WordPress Multisite' || app === 'WordPress + NGINX + SSL') appQuery = 'WordPress';
 
           searchString = topicQuery;
 

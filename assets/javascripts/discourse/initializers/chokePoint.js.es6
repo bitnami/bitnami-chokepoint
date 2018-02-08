@@ -207,9 +207,9 @@ export default {
 
           if (app !== 'General') appQuery = app;
 
-          if (appQuery === 'WordPress Multisite') {
+          if (app === 'WordPress Multisite') {
             appQuery = 'WordPress OR Multisite';
-          } else if (appQuery === 'WordPress + NGINX + SSL') {
+          } else if (app === 'WordPress + NGINX + SSL') {
             appQuery = 'WordPress OR NGINX';
           }
 

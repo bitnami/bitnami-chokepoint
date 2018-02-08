@@ -206,7 +206,12 @@ export default {
           }
 
           if (app !== 'General') appQuery = app;
-          if (app === 'WordPress Multisite' || app === 'WordPress + NGINX + SSL') appQuery = 'WordPress';
+
+          if (appQuery === 'WordPress Multisite') {
+            appQuery = 'WordPress OR Multisite';
+          } else if (appQuery === 'WordPress + NGINX + SSL') {
+            appQuery = 'WordPress OR NGINX';
+          }
 
           searchString = topicQuery;
 

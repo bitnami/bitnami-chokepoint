@@ -3,7 +3,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.2';
+    const version = 'v1.0.3';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -143,7 +143,7 @@ export default {
       try {
         const d = new Date();
         const date = `${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
-        let info = `[${date}] ${version} ${Discourse.User.current().get('username')}`;
+        let info = `[${date}] ${version} ${Discourse.User.current().get('id')}`;
         if (extraInfo) info += ` : ${extraInfo}`;
 
         if (!Discourse.User.current().staff) {
@@ -154,7 +154,7 @@ export default {
       } catch (e) {
         const d = new Date();
         const date = `${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
-        const info = `[${date}] ${version} ${Discourse.User.current().get('username')} ${e} ${navigator.userAgent}`;
+        const info = `[${date}] ${version} ${Discourse.User.current().get('id')} ${e} ${navigator.userAgent}`;
         if (!Discourse.User.current().staff) {
           ga('send', 'event', 'SupportCase', 'Failure', info);
         } else {

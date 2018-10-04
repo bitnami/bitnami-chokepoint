@@ -1,6 +1,6 @@
 {
   "name": "chokepoint",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "chokepoint",
   "devDependencies": {
     "eslint": "",

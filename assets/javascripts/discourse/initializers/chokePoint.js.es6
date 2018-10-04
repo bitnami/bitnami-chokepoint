@@ -3,7 +3,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.4';
+    const version = 'v1.0.5';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;

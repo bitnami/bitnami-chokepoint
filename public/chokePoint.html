@@ -9,7 +9,7 @@
   <select disabled tabindex="-1" style="display: block;" data-link="typeSelected">
   [[else]]
   <select tabindex="-1" style="display: block;" data-link="typeSelected">
-  [[/fi]]
+  [[/if]]
     <option value="" disabled selected>Select a type…</option>
     [[for typeValues]]
       <option>[[:type]]</option>
@@ -23,7 +23,7 @@
   <select disabled tabindex="-1" style="display: block;" data-link="platformSelected">
   [[else]]
   <select tabindex="-1" style="display: block;" data-link="platformSelected">
-  [[/fi]]
+  [[/if]]
     <option value="" disabled selected>Select a platform…</option>
     [[for platformValues]]
       [[if subplatforms]]
@@ -65,8 +65,8 @@
           <option value="[[:application]]">[[:application]]</option>
         [[/for]]
       </select>
-    [[/fi]]
-  [[/fi]]
+    [[/if]]
+  [[/if]]
 </script>
 
 <script id="topic" type="text/x-jsrender">
@@ -75,7 +75,7 @@
   <select disabled tabindex="-1" style="display: block;" data-link="topicSelected">
   [[else]]
   <select tabindex="-1" style="display: block;" data-link="~root.topicSelected">
-  [[/fi]]
+  [[/if]]
     <option value="" disabled selected>Select a topic…</option>
     [[for ~root.topicValues]]
       <option>[[:topic]]</option>

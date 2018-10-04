@@ -3,7 +3,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.3';
+    const version = 'v1.0.4';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -127,7 +127,7 @@ export default {
       return function(a, b) {
         if (a[prop] > b[prop]) {
           return 1;
-        } else if (a[prop] < b[prop]) {
+        } if (a[prop] < b[prop]) {
           return -1;
         }
         return 0;
@@ -371,8 +371,8 @@ export default {
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
 
           if (allData.typeSelected === 'How to' || allData.typeSelected === 'Technical issue') {
-            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ` +
-                   `${allData.typeSelected} - ${allData.topicSelected}\n`;
+            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
+                   + `${allData.typeSelected} - ${allData.topicSelected}\n`;
             if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
             body += `**Description:**\n ${allData.textareaFilled}`;
 

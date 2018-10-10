@@ -34,32 +34,24 @@ export default {
               query: 'Google',
             },
             {
-              subplatform: 'Amazon Web Services',
-              query: 'AWS OR Amazon',
+              subplatform: 'AWS',
+              query: 'AWS',
             },
             {
               subplatform: 'Microsoft Azure',
-              query: 'Azure OR Microsoft',
+              query: 'Azure',
             },
             {
               subplatform: 'Oracle Cloud Platform',
               query: 'Oracle',
             },
             {
-              subplatform: 'Century Link',
+              subplatform: 'CenturyLink',
               query: 'CenturyLink',
             },
             {
-              subplatform: '1&1',
+              subplatform: '1and1',
               query: '1and1',
-            },
-            {
-              subplatform: 'Huawei Cloud',
-              query: 'Huawei',
-            },
-            {
-              subplatform: 'Open Telekom Cloud',
-              query: 'Telekom',
             },
           ],
         },
@@ -90,23 +82,23 @@ export default {
       topicArray: [
         {
           topic: 'Email configuration (SMTP)',
-          query: 'SMTP OR mail OR email OR Troubleshoot',
+          query: 'SMTP OR mail OR Troubleshoot',
         },
         {
           topic: 'Connectivity (SSH/FTP)',
-          query: 'SSH OR tunnel OR FTP OR Troubleshoot',
+          query: 'SSH OR FTP OR Troubleshoot',
         },
         {
           topic: 'Secure Connections (SSL/HTTPS)',
-          query: 'SSL OR tls OR HTTPS OR Troubleshoot',
+          query: 'SSL OR HTTPS OR Troubleshoot',
         },
         {
           topic: 'Permissions',
-          query: 'permissions OR plugin OR upload Or install OR Troubleshoot',
+          query: 'permissions OR plugin OR Troubleshoot',
         },
         {
           topic: 'Credentials',
-          query: 'login OR credentials OR password OR frequently',
+          query: 'login OR credentials OR password',
         },
         {
           topic: 'Domain Name (DNS)',
@@ -219,16 +211,17 @@ export default {
           searchString = topicQuery;
 
           if (searchString) {
+            if (appQuery) searchString += ` OR ${appQuery}`;
+          } else {
+            searchString += `${appQuery}`;
+          }
+
+          if (searchString) {
             if (platformQuery) searchString += ` OR ${platformQuery}`;
           } else {
             searchString += `${platformQuery}`;
           }
 
-          if (searchString) {
-            if (appQuery) searchString += ` OR ${appQuery}`;
-          } else {
-            searchString += `${appQuery}`;
-          }
 
           return searchString;
         };

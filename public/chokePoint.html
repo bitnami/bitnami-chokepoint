@@ -1,5 +1,5 @@
-<script src="//www.jsviews.com/download/jsrender.js"></script>
-<script src="//www.jsviews.com/download/jsviews.min.js"></script>
+<script src="src/jsrender.js"></script>
+<script src="src/jsviews.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="/plugins/bitnami-chokepoint/chokePoint.css">
 
@@ -197,9 +197,7 @@
             [[/if]]
           [[else typeSelected == 'Sales & Account']]
             <p>For sales and account questions, we will help you in our HelpDesk service.</p>
-          [[else typeSelected == 'Stacksmith']]
-            <p>For Stacksmith questions, we will help you through the Stacksmith Support page.</p>
-          [[else typeSelected == 'Suggestion']]
+          [[else typeSelected == 'Stacksmith' || typeSelected == 'Suggestion']]
             [^[include tmpl="#title"/]]
             [^[include tmpl="#issue"/]]
           [[/if]]
@@ -210,10 +208,7 @@
         [^[else typeSelected == 'Sales & Account']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="goToHelpdesk()">Go to Bitnami HelpDesk</button>
-        [^[else typeSelected == 'Stacksmith']]
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="goToStacksmith()">Go to Stacksmith Support</button>
-        [^[else typeSelected == 'Suggestion']]
+        [^[else typeSelected == 'Stacksmith' || typeSelected == 'Suggestion']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="create()">Create topic</button>
         [^[else applicationSelected && platformSelected == 'Containers']]

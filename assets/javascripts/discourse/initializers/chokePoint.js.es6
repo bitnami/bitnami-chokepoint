@@ -382,6 +382,10 @@ export default {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = 'General';
             dataToSend.raw = body;
+          } else if (allData.typeSelected === 'Stacksmith') {
+            body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
+            dataToSend.category = 'Stacksmith';
+            dataToSend.raw = body;
           }
 
           // Generate SendPost event before send post message
@@ -422,15 +426,6 @@ export default {
         */
         window.goToHelpdesk = function goToHelpdesk() {
           window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new', '_blank');
-          cancel();
-        };
-
-        /**
-        * Action after click on "Go to Bitnami Stacksmith Support page" button.
-        * Remove the bitnami box and open Stacksmith Support page in a new tab
-        */
-        window.goToStacksmith = function goToStacksmith() {
-          window.open('https://stacksmith.bitnami.com/support', '_blank');
           cancel();
         };
 

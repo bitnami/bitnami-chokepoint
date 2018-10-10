@@ -183,6 +183,7 @@ export default {
         * Adapt the search string
         */
         window.adaptSearch = function adaptSearch(platform, app, topic) {
+          const limitSearch = 10;
           let searchString = '';
           let topicQuery = '';
           let platformQuery = '';
@@ -202,10 +203,8 @@ export default {
 
           if (app !== 'General') appQuery = app;
 
-          if (app === 'WordPress Multisite') {
-            appQuery = 'WordPress OR Multisite';
-          } else if (app === 'WordPress + NGINX + SSL') {
-            appQuery = 'WordPress OR NGINX';
+          if (app === 'WordPress + NGINX + SSL') {
+            appQuery = 'WordPress NGINX';
           }
 
           searchString = topicQuery;
@@ -216,12 +215,14 @@ export default {
             searchString += `${appQuery}`;
           }
 
-          if (searchString) {
-            if (platformQuery) searchString += ` OR ${platformQuery}`;
-          } else {
-            searchString += `${platformQuery}`;
+          if (searchString && platformQuery) {
+            platformQuery = ` OR ${platformQuery}`;
           }
 
+          //If there are not more than limitSearch terms in the request, we add the platform
+          if (searchString.split(" ").length + platformQuery.split(" ").length <= limitSearch) {
+            searchString += `${platformQuery}`;
+          }
 
           return searchString;
         };

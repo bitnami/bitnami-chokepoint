@@ -372,13 +372,9 @@ export default {
 
             dataToSend.category = allData.applicationSelected;
             dataToSend.raw = body;
-          } else if (allData.typeSelected === 'Suggestion') {
+          }	else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = 'General';
-            dataToSend.raw = body;
-          } else if (allData.typeSelected === 'Stacksmith') {
-            body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = 'Stacksmith';
+            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected
             dataToSend.raw = body;
           }
 

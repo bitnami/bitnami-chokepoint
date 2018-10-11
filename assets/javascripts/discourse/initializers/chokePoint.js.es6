@@ -372,7 +372,7 @@ export default {
 
             dataToSend.category = allData.applicationSelected;
             dataToSend.raw = body;
-          }	else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
+          } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected
             dataToSend.raw = body;

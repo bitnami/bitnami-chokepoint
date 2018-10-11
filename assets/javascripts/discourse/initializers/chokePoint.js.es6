@@ -215,13 +215,17 @@ export default {
             searchString += `${appQuery}`;
           }
 
-          if (searchString && platformQuery) {
-            platformQuery = ` OR ${platformQuery}`;
+          if (searchString) {
+            if (platformQuery) searchString += ` OR ${platformQuery}`;
+          } else {
+            searchString += `${platformQuery}`;
           }
 
-          //If there are not more than limitSearch terms in the request, we add the platform
-          if (searchString.split(" ").length + platformQuery.split(" ").length <= limitSearch) {
-            searchString += `${platformQuery}`;
+          //If there are more than limitSearch terms in the request, we limit the search
+          if (searchString.split(" ").length > limitSearch) {
+            searchString = searchString.split(" ").slice(0, limitSearch);
+            if (searchString[limitSearch-1] == "OR" || searchString[limitSearch-1] == "or") searchString.pop();
+            searchString = searchString.join(" ");
           }
 
           return searchString;

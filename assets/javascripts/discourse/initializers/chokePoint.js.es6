@@ -207,18 +207,18 @@ export default {
             appQuery = 'WordPress NGINX';
           }
 
-          searchString = topicQuery;
-
-          if (searchString) {
-            if (appQuery) searchString += ` OR ${appQuery}`;
-          } else {
-            searchString += `${appQuery}`;
-          }
+          searchString = appQuery;
 
           if (searchString) {
             if (platformQuery) searchString += ` OR ${platformQuery}`;
           } else {
             searchString += `${platformQuery}`;
+          }
+
+          if (searchString) {
+            if (topicQuery) searchString += ` OR ${topicQuery}`;
+          } else {
+            searchString += `${topicQuery}`;
           }
 
           //If there are more than limitSearch terms in the request, we limit the search

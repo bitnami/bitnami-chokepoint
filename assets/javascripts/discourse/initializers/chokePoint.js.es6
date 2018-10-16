@@ -16,13 +16,13 @@ export default {
           type: 'Technical issue',
         },
         {
+          type: 'Stacksmith',
+        },
+        {
           type: 'Suggestion',
         },
         {
           type: 'Sales & Account',
-        },
-        {
-          type: 'Stacksmith',
         },
       ],
       platformArray: [

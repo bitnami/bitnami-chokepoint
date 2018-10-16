@@ -221,11 +221,11 @@ export default {
             searchString += `${topicQuery}`;
           }
 
-          //If there are more than limitSearch terms in the request, we limit the search
-          if (searchString.split(" ").length > limitSearch) {
-            searchString = searchString.split(" ").slice(0, limitSearch);
-            if (searchString[limitSearch-1] == "OR" || searchString[limitSearch-1] == "or") searchString.pop();
-            searchString = searchString.join(" ");
+          // If there are more than limitSearch terms in the request, we limit the search
+          if (searchString.split(' ').length > limitSearch) {
+            searchString = searchString.split(' ').slice(0, limitSearch);
+            if (searchString[limitSearch - 1] === 'OR' || searchString[limitSearch - 1] === 'or') searchString.pop();
+            searchString = searchString.join(' ');
           }
 
           return searchString;
@@ -378,7 +378,7 @@ export default {
             dataToSend.raw = body;
           } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected
+            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
             dataToSend.raw = body;
           }
 
@@ -406,7 +406,7 @@ export default {
                 // Generate Failure event due to a fail in the Discourse tests (title, content, category, etc)
                 generateEvent('Failure', `${text} : ${navigator.userAgent}`);
                 text = text.concat('\nPlease, fix the issue and try again.');
-                alert(text);
+                alert(text); // eslint-disable-line no-alert
               } catch (e) {
                 // Generate Failure event due to a fail inside fail callback
                 generateEvent('Failure', `${e} : ${navigator.userAgent}`);

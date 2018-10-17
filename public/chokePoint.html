@@ -1,5 +1,5 @@
-<script src="//www.jsviews.com/download/jsrender.js"></script>
-<script src="//www.jsviews.com/download/jsviews.min.js"></script>
+<script src="/bitnami-chokepoint/jsrender.js" type='text/javascript'></script>
+<script src="/bitnami-chokepoint/jsviews.min.js" type='text/javascript'></script>
 
 <link rel="stylesheet" type="text/css" href="/plugins/bitnami-chokepoint/chokePoint.css">
 
@@ -101,7 +101,7 @@
 <script id="issue" type="text/x-jsrender">
   <div>
     <h4>[[if typeSelected == 'Technical issue']]Description[[else typeSelected == 'How to']]Describe your question here[[else typeSelected == 'Suggestion']]Describe your suggestion here[[/if]]</h4>
-    <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled" required></textarea>
+    <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else typeSelected == 'Stacksmith']]your question about Stacksmith as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled" required></textarea>
   </div>
   <div class="text-r padding-r-giant">
     <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Styling with Markdown is supported</a>
@@ -197,9 +197,7 @@
             [[/if]]
           [[else typeSelected == 'Sales & Account']]
             <p>For sales and account questions, we will help you in our HelpDesk service.</p>
-          [[else typeSelected == 'Stacksmith']]
-            <p>For Stacksmith questions, we will help you through the Stacksmith Support page.</p>
-          [[else typeSelected == 'Suggestion']]
+          [[else typeSelected == 'Stacksmith' || typeSelected == 'Suggestion']]
             [^[include tmpl="#title"/]]
             [^[include tmpl="#issue"/]]
           [[/if]]
@@ -210,10 +208,7 @@
         [^[else typeSelected == 'Sales & Account']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="goToHelpdesk()">Go to Bitnami HelpDesk</button>
-        [^[else typeSelected == 'Stacksmith']]
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="goToStacksmith()">Go to Stacksmith Support</button>
-        [^[else typeSelected == 'Suggestion']]
+        [^[else typeSelected == 'Stacksmith' || typeSelected == 'Suggestion']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="create()">Create topic</button>
         [^[else applicationSelected && platformSelected == 'Containers']]

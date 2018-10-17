@@ -3,7 +3,7 @@ const NavigationDefaultController = require('discourse/controllers/navigation/de
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.4';
+    const version = 'v1.0.5';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -16,13 +16,13 @@ export default {
           type: 'Technical issue',
         },
         {
+          type: 'Stacksmith',
+        },
+        {
           type: 'Suggestion',
         },
         {
           type: 'Sales & Account',
-        },
-        {
-          type: 'Stacksmith',
         },
       ],
       platformArray: [
@@ -34,32 +34,24 @@ export default {
               query: 'Google',
             },
             {
-              subplatform: 'Amazon Web Services',
-              query: 'AWS OR Amazon',
+              subplatform: 'AWS',
+              query: 'AWS',
             },
             {
               subplatform: 'Microsoft Azure',
-              query: 'Azure OR Microsoft',
+              query: 'Azure',
             },
             {
               subplatform: 'Oracle Cloud Platform',
               query: 'Oracle',
             },
             {
-              subplatform: 'Century Link',
+              subplatform: 'CenturyLink',
               query: 'CenturyLink',
             },
             {
-              subplatform: '1&1',
+              subplatform: '1and1',
               query: '1and1',
-            },
-            {
-              subplatform: 'Huawei Cloud',
-              query: 'Huawei',
-            },
-            {
-              subplatform: 'Open Telekom Cloud',
-              query: 'Telekom',
             },
           ],
         },
@@ -90,23 +82,23 @@ export default {
       topicArray: [
         {
           topic: 'Email configuration (SMTP)',
-          query: 'SMTP OR mail OR email OR Troubleshoot',
+          query: 'SMTP OR mail OR Troubleshoot',
         },
         {
           topic: 'Connectivity (SSH/FTP)',
-          query: 'SSH OR tunnel OR FTP OR Troubleshoot',
+          query: 'SSH OR FTP OR Troubleshoot',
         },
         {
           topic: 'Secure Connections (SSL/HTTPS)',
-          query: 'SSL OR tls OR HTTPS OR Troubleshoot',
+          query: 'SSL OR HTTPS OR Troubleshoot',
         },
         {
           topic: 'Permissions',
-          query: 'permissions OR plugin OR upload Or install OR Troubleshoot',
+          query: 'permissions OR plugin OR Troubleshoot',
         },
         {
           topic: 'Credentials',
-          query: 'login OR credentials OR password OR frequently',
+          query: 'login OR credentials OR password',
         },
         {
           topic: 'Domain Name (DNS)',
@@ -191,6 +183,7 @@ export default {
         * Adapt the search string
         */
         window.adaptSearch = function adaptSearch(platform, app, topic) {
+          const limitSearch = 10;
           let searchString = '';
           let topicQuery = '';
           let platformQuery = '';
@@ -210,13 +203,11 @@ export default {
 
           if (app !== 'General') appQuery = app;
 
-          if (app === 'WordPress Multisite') {
-            appQuery = 'WordPress OR Multisite';
-          } else if (app === 'WordPress + NGINX + SSL') {
-            appQuery = 'WordPress OR NGINX';
+          if (app === 'WordPress + NGINX + SSL') {
+            appQuery = 'WordPress NGINX';
           }
 
-          searchString = topicQuery;
+          searchString = appQuery;
 
           if (searchString) {
             if (platformQuery) searchString += ` OR ${platformQuery}`;
@@ -225,9 +216,16 @@ export default {
           }
 
           if (searchString) {
-            if (appQuery) searchString += ` OR ${appQuery}`;
+            if (topicQuery) searchString += ` OR ${topicQuery}`;
           } else {
-            searchString += `${appQuery}`;
+            searchString += `${topicQuery}`;
+          }
+
+          // If there are more than limitSearch terms in the request, we limit the search
+          if (searchString.split(' ').length > limitSearch) {
+            searchString = searchString.split(' ').slice(0, limitSearch);
+            if (searchString[limitSearch - 1] === 'OR' || searchString[limitSearch - 1] === 'or') searchString.pop();
+            searchString = searchString.join(' ');
           }
 
           return searchString;
@@ -378,9 +376,9 @@ export default {
 
             dataToSend.category = allData.applicationSelected;
             dataToSend.raw = body;
-          } else if (allData.typeSelected === 'Suggestion') {
+          } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = 'General';
+            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
             dataToSend.raw = body;
           }
 
@@ -408,7 +406,7 @@ export default {
                 // Generate Failure event due to a fail in the Discourse tests (title, content, category, etc)
                 generateEvent('Failure', `${text} : ${navigator.userAgent}`);
                 text = text.concat('\nPlease, fix the issue and try again.');
-                alert(text);
+                alert(text); // eslint-disable-line no-alert
               } catch (e) {
                 // Generate Failure event due to a fail inside fail callback
                 generateEvent('Failure', `${e} : ${navigator.userAgent}`);
@@ -422,15 +420,6 @@ export default {
         */
         window.goToHelpdesk = function goToHelpdesk() {
           window.open('https://helpdesk.bitnami.com/hc/en-us/requests/new', '_blank');
-          cancel();
-        };
-
-        /**
-        * Action after click on "Go to Bitnami Stacksmith Support page" button.
-        * Remove the bitnami box and open Stacksmith Support page in a new tab
-        */
-        window.goToStacksmith = function goToStacksmith() {
-          window.open('https://stacksmith.bitnami.com/support', '_blank');
           cancel();
         };
 

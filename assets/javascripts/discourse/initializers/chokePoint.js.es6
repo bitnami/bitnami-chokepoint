@@ -356,6 +356,16 @@ export default {
           const page3 = $.templates('#explanationCase');
           page3.link('#bitnamiContainer', allData);
         };
+        
+        /**
+        * Action after clicking Next in case of Technical issue 
+        * Ask user for the bnsupport tool code
+        */
+        window.goToPage4 = function goToPage4() {
+          allData.currentPage = 4;
+          const page4 = $.templates('#bnsupportPage');
+          page4.link('#bitnamiContainer', allData);
+        };
 
         /**
         * Create case using introduced data

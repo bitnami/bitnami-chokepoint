@@ -371,21 +371,19 @@ export default {
           if (allData.typeSelected === 'How to' || allData.typeSelected === 'Technical issue') {
             if (!allData.bnsupportAlertShown) {
               alert("In most cases using the bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.");
-              allData.bnsupportAlertShown=true
+              allData.bnsupportAlertShown=true;
             } else {
               body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
               + `${allData.typeSelected} - ${allData.topicSelected}\n`;
-                if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
-                  body += `**Description:**\n ${allData.textareaFilled}`;
-                  dataToSend.category = allData.applicationSelected;
-                  dataToSend.raw = body;
-                }
-              }
+              if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
+              body += `**Description:**\n ${allData.textareaFilled}`;
+              dataToSend.category = allData.applicationSelected;
+              dataToSend.raw = body;
             }
           } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
-              body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-              dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
-              dataToSend.raw = body;
+            body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
+            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
+            dataToSend.raw = body;
           }
 
           // Generate SendPost event before send post message

@@ -378,7 +378,7 @@ export default {
           };
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
-          if (allData.typeSelected === 'How to' || allData.typeSelected === 'Technical issue') {
+          if (allData.typeSelected === 'Technical issue') {
             if (!allData.bnsupportAlertShown) {
               alert("In most cases using the bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.");
               allData.bnsupportAlertShown=true;
@@ -390,6 +390,11 @@ export default {
               dataToSend.category = allData.applicationSelected;
               dataToSend.raw = body;
             }
+          } else if (allData.typeSelected === 'How to') {
+              body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
+              + `${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
+              dataToSend.category = allData.applicationSelected;
+              dataToSend.raw = body;
           } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;

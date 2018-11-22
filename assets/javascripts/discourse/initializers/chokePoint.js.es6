@@ -380,15 +380,23 @@ export default {
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
           if (allData.typeSelected === 'Technical issue') {
             if (!allData.bnsupportAlertShown) {
-              alert("In most cases using the bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.");
+              createTopic = confirm("In most cases using the Bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.\nCreate the topic anyway?");
+                if (createTopic) {
+                  body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
+                  + `${allData.typeSelected} - ${allData.topicSelected}\n`;
+                  if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
+                  body += `**Description:**\n ${allData.textareaFilled}`;
+                  dataToSend.category = allData.applicationSelected;
+                  dataToSend.raw = body;
+                }
               allData.bnsupportAlertShown=true;
             } else {
-              body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
-              + `${allData.typeSelected} - ${allData.topicSelected}\n`;
-              if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
-              body += `**Description:**\n ${allData.textareaFilled}`;
-              dataToSend.category = allData.applicationSelected;
-              dataToSend.raw = body;
+                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
+                + `${allData.typeSelected} - ${allData.topicSelected}\n`;
+                if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
+                body += `**Description:**\n ${allData.textareaFilled}`;
+                dataToSend.category = allData.applicationSelected;
+                dataToSend.raw = body;
             }
           } else if (allData.typeSelected === 'How to') {
               body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
@@ -396,9 +404,9 @@ export default {
               dataToSend.category = allData.applicationSelected;
               dataToSend.raw = body;
           } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
-            body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
-            dataToSend.raw = body;
+              body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
+              dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
+              dataToSend.raw = body;
           }
 
           // Generate SendPost event before send post message

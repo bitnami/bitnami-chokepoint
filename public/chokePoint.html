@@ -88,8 +88,9 @@
   <h4>Title</h4>
   [[if currentPage == 4]]
     <p>[[:titleFilled]]</p>
+    [[else]]
+      <textarea class="title" placeholder="Summarise your question in less than 120 characters" maxlength="120" data-link="titleFilled"></textarea>
   [[/if]]
-  <textarea class="title" placeholder="Summarise your question in less than 120 characters" maxlength="120" data-link="titleFilled"></textarea>
 </script>
 
 <script id="bnsupport" type="text/x-jsrender">
@@ -106,8 +107,9 @@
     <h4>[[if typeSelected == 'Technical issue']]Description[[else typeSelected == 'How to']]Describe your question here[[else typeSelected == 'Suggestion']]Describe your suggestion here[[/if]]</h4>
     [[if currentPage == 4]]
       <p>[[:textareaFilled]]</p>
+      [[else]]
+        <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else typeSelected == 'Stacksmith']]your question about Stacksmith as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled" required></textarea>
     [[/if]]
-    <textarea class="issue" placeholder="Include [[if typeSelected == 'Technical issue']]detailed steps to reproduce the issue[[else typeSelected == 'Suggestion']]your suggestion as detailed as possible[[else typeSelected == 'Stacksmith']]your question about Stacksmith as detailed as possible[[else]]your question as detailed as possible[[/if]]" data-link="textareaFilled" required></textarea>
   </div>
   <div class="text-r padding-r-giant">
     <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">Styling with Markdown is supported</a>

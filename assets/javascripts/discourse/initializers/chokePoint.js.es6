@@ -245,6 +245,7 @@ export default {
           bnsupportAlertShown:false,
           textareaFilled: null,
           currentPage: 1,
+          createTopic:1,
           adaptSearch: adaptSearch,
         };
 
@@ -379,25 +380,15 @@ export default {
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
           if (allData.typeSelected === 'Technical issue') {
-            if (!allData.bnsupportAlertShown) {
-              const createTopic = confirm("In most cases using the Bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.\n\nCreate the topic anyway?");
-              if (createTopic) {
-                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
-                + `${allData.typeSelected} - ${allData.topicSelected}\n`;
-                if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
+            if (!allData.bnsupportFilled) allData.createTopic = confirm("In most cases using the Bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.\n\nCreate the topic anyway?");
+            if (allData.createTopic || allData.bnsupportFilled) {
+              body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
+              + `${allData.typeSelected} - ${allData.topicSelected}\n`;
+              if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
                 body += `**Description:**\n ${allData.textareaFilled}`;
                 dataToSend.category = allData.applicationSelected;
                 dataToSend.raw = body;
-              }
-              allData.bnsupportAlertShown=true;
-            } else {
-                body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
-                + `${allData.typeSelected} - ${allData.topicSelected}\n`;
-                if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
-                body += `**Description:**\n ${allData.textareaFilled}`;
-                dataToSend.category = allData.applicationSelected;
-                dataToSend.raw = body;
-            }
+            } 
           } else if (allData.typeSelected === 'How to') {
               body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
               + `${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;

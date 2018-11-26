@@ -242,8 +242,10 @@ export default {
           topicValues: dropdownData.topicArray.sort(propComparator('topic')),
           titleFilled: null,
           bnsupportFilled: null,
+          bnsupportAlertShown: false,
           textareaFilled: null,
           currentPage: 1,
+          createTopic: 1,
           adaptSearch: adaptSearch,
         };
 
@@ -355,6 +357,16 @@ export default {
           const page3 = $.templates('#explanationCase');
           page3.link('#bitnamiContainer', allData);
         };
+        
+        /**
+        * Action after clicking Next in case of Technical issue 
+        * Ask user for the bnsupport tool code
+        */
+        window.goToPage4 = function goToPage4() {
+          allData.currentPage = 4;
+          const page4 = $.templates('#bnsupportPage');
+          page4.link('#bitnamiContainer', allData);
+        };
 
         /**
         * Create case using introduced data
@@ -367,13 +379,17 @@ export default {
           };
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
-
-          if (allData.typeSelected === 'How to' || allData.typeSelected === 'Technical issue') {
-            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - `
-                   + `${allData.typeSelected} - ${allData.topicSelected}\n`;
-            if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
-            body += `**Description:**\n ${allData.textareaFilled}`;
-
+          if (allData.typeSelected === 'Technical issue') {
+            if (!allData.bnsupportFilled) allData.createTopic = confirm("In most cases using the Bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.\n\nCreate the topic anyway?");
+            if (allData.createTopic || allData.bnsupportFilled) {
+              body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n`;
+              if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
+              body += `**Description:**\n ${allData.textareaFilled}`;
+              dataToSend.category = allData.applicationSelected;
+              dataToSend.raw = body;
+            } 
+          } else if (allData.typeSelected === 'How to') {
+            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = allData.applicationSelected;
             dataToSend.raw = body;
           } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {

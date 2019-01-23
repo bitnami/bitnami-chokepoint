@@ -1,4 +1,5 @@
 const NavigationDefaultController = require('discourse/controllers/navigation/default').default;
+const SearchResultsDefaultController = require('discourse/controllers/full-page-search').default;
 
 export default {
   name: 'chokepoint',
@@ -453,6 +454,12 @@ export default {
     }
 
     NavigationDefaultController.reopen({
+      actions: {
+        createTopic: chokePoint,
+      },
+    });
+
+    SearchResultsDefaultController.reopen({
       actions: {
         createTopic: chokePoint,
       },

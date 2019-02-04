@@ -147,7 +147,7 @@ export default {
       } catch (e) {
         const d = new Date();
         const date = `${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
-        const info = `[${date}] ${version} ${Discourse.User.current().get('id')} ${e} ${navigator.userAgent}`;
+        const info = `[${date}] ${version} ${Discourse.User.current().get('id')} generateEvent - ${e} ${navigator.userAgent}`;
         if (!Discourse.User.current().staff) {
           ga('send', 'event', 'SupportCase', 'Failure', info);
         } else {
@@ -411,7 +411,7 @@ export default {
                 window.location.replace(caseURL);
               } catch (e) {
                 // Generate Failure event due to a fail inside done callback
-                generateEvent('Failure', `${e} : ${navigator.userAgent}`);
+                generateEvent('Failure', `Generate Failure event due to a fail inside done callback - ${e} : ${navigator.userAgent}`);
               }
             })
             .fail(function(xhr) {
@@ -426,7 +426,7 @@ export default {
                 alert(text); // eslint-disable-line no-alert
               } catch (e) {
                 // Generate Failure event due to a fail inside fail callback
-                generateEvent('Failure', `${e} : ${navigator.userAgent}`);
+                generateEvent('Failure', `Generate Failure event due to a fail inside fail callback - ${e} : ${navigator.userAgent}`);
               }
             });
         };
@@ -448,7 +448,7 @@ export default {
         return false;
       } catch (e) {
         // Generate Failure event due to a fail in the JS chokepoint code
-        generateEvent('Failure', `${e} : ${navigator.userAgent}`);
+        generateEvent('Failure', `Generate Failure event due to a fail in the JS chokepoint code - ${e} : ${navigator.userAgent}`);
         return true;
       }
     }
@@ -499,7 +499,7 @@ export default {
                         showChokePoint = true;
                       } catch (e) {
                         // Error managing categories
-                        withoutChokepoint(e);
+                        withoutChokepoint(`Error managing categories - ${e}`);
                       }
                     })
                     .fail(function() {
@@ -509,7 +509,7 @@ export default {
                 });
               } catch (e) {
                 // JS error before chokePoint appears
-                withoutChokepoint(e);
+                withoutChokepoint(`JS error before chokePoint appears - ${e}`);
               }
             })
             .fail(function() {
@@ -518,7 +518,7 @@ export default {
             });
         } catch (e) {
           // Error before chokePoint appears
-          withoutChokepoint(e);
+          withoutChokepoint(`Error before chokePoint appears - ${e}`);
         }
       });
     }

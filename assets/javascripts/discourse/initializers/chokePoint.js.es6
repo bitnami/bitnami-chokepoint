@@ -411,7 +411,7 @@ export default {
                 window.location.replace(caseURL);
               } catch (e) {
                 // Generate Failure event due to a fail inside done callback
-                generateEvent('Failure', `Generate Failure event due to a fail inside done callback - ${e} : ${navigator.userAgent}`);
+                generateEvent('Failure', `Generate Failure. Done callback - ${e} : ${navigator.userAgent}`);
               }
             })
             .fail(function(xhr) {
@@ -426,7 +426,7 @@ export default {
                 alert(text); // eslint-disable-line no-alert
               } catch (e) {
                 // Generate Failure event due to a fail inside fail callback
-                generateEvent('Failure', `Generate Failure event due to a fail inside fail callback - ${e} : ${navigator.userAgent}`);
+                generateEvent('Failure', `Generate Failure. Fail callback - ${xhr.responseText} - ${e} : ${navigator.userAgent}`);
               }
             });
         };

@@ -466,62 +466,60 @@ export default {
       },
     });
 
-    if (typeof disableChokePoint === 'undefined' || !disableChokePoint) {
-      /* The ready() method offers a way to run JavaScript code as soon as the
-      * page's Document Object Model (DOM) becomes safe to manipulate.
-      * This will often be a good time to perform tasks that are needed before
-      * the user views or interacts with the page
-      */
-      $(document).ready(function() {
-        $('#create-topic').hide();
+    /* The ready() method offers a way to run JavaScript code as soon as the
+    * page's Document Object Model (DOM) becomes safe to manipulate.
+    * This will often be a good time to perform tasks that are needed before
+    * the user views or interacts with the page
+    */
+    $(document).ready(function() {
+      $('#create-topic').hide();
 
-        try {
-          // Load chokePoint.html (plus chokePoint.css and some JavaScripts included in the HTML)
-          $.get('/plugins/bitnami-chokepoint/chokePoint.html')
-            .done(function(value) {
-              try {
-                $('head').append(value);
-                // The load event is sent to an element when it and all sub-elements have been completely loaded
-                $(window).on('load', function() {
-                  // Obtains application name dinamically from Discourse categories
-                  $.get(`${communityURL}/categories.json`)
-                    .done(function(data) {
-                      try {
-                        data.category_list.categories.forEach(function(category) {
-                          if (category.name !== 'Staff' && category.name !== 'General') {
-                            const object = {};
-                            object.application = category.name;
-                            object.slug = category.slug;
-                            applicationArray.push(object);
-                          }
-                        });
-                        applicationArray.sort(propComparator('application'));
-                        $('#create-topic').show();
-                        showChokePoint = true;
-                      } catch (e) {
-                        // Error managing categories
-                        withoutChokepoint(`Error managing categories - ${e}`);
-                      }
-                    })
-                    .fail(function() {
-                      // Error dowloading categories
-                      withoutChokepoint('Error downloading categories');
-                    });
-                });
-              } catch (e) {
-                // JS error before chokePoint appears
-                withoutChokepoint(`JS error before chokePoint appears - ${e}`);
-              }
-            })
-            .fail(function() {
-              // Error downloading html
-              withoutChokepoint('Error downloading html');
-            });
-        } catch (e) {
-          // Error before chokePoint appears
-          withoutChokepoint(`Error before chokePoint appears - ${e}`);
-        }
-      });
-    }
+      try {
+        // Load chokePoint.html (plus chokePoint.css and some JavaScripts included in the HTML)
+        $.get('/plugins/bitnami-chokepoint/chokePoint.html')
+          .done(function(value) {
+            try {
+              $('head').append(value);
+              // The load event is sent to an element when it and all sub-elements have been completely loaded
+              $(window).on('load', function() {
+                // Obtains application name dinamically from Discourse categories
+                $.get(`${communityURL}/categories.json`)
+                  .done(function(data) {
+                    try {
+                      data.category_list.categories.forEach(function(category) {
+                        if (category.name !== 'Staff' && category.name !== 'General') {
+                          const object = {};
+                          object.application = category.name;
+                          object.slug = category.slug;
+                          applicationArray.push(object);
+                        }
+                      });
+                      applicationArray.sort(propComparator('application'));
+                      $('#create-topic').show();
+                      showChokePoint = true;
+                    } catch (e) {
+                      // Error managing categories
+                      withoutChokepoint(`Error managing categories - ${e}`);
+                    }
+                  })
+                  .fail(function() {
+                    // Error dowloading categories
+                    withoutChokepoint('Error downloading categories');
+                  });
+              });
+            } catch (e) {
+              // JS error before chokePoint appears
+              withoutChokepoint(`JS error before chokePoint appears - ${e}`);
+            }
+          })
+          .fail(function() {
+            // Error downloading html
+            withoutChokepoint('Error downloading html');
+          });
+      } catch (e) {
+        // Error before chokePoint appears
+        withoutChokepoint(`Error before chokePoint appears - ${e}`);
+      }
+    });
   },
 };

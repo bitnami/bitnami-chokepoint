@@ -172,7 +172,7 @@ export default {
     function chokePoint() {
       try {
         if ((typeof disableChokePoint !== 'undefined' && disableChokePoint) || !showChokePoint) {
-          generateEvent('New', `No chokepoint - ${disableChokePoint} - ${showChokePoint} - ${disableChokePoint !== 'undefined'}`);
+          generateEvent('New', `No chokepoint - ${typeof disableChokePoint !== 'undefined'} - ${typeof disableChokePoint !== 'undefined' && disableChokePoint} - ${showChokePoint}`);
           return true;
         }
         // Generate New event when click on New Topic

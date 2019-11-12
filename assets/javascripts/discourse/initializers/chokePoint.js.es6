@@ -17,9 +17,6 @@ export default {
           type: 'Technical issue',
         },
         {
-          type: 'Stacksmith',
-        },
-        {
           type: 'Suggestion',
         },
         {
@@ -359,9 +356,9 @@ export default {
           const page3 = $.templates('#explanationCase');
           page3.link('#bitnamiContainer', allData);
         };
-        
+
         /**
-        * Action after clicking Next in case of Technical issue 
+        * Action after clicking Next in case of Technical issue
         * Ask user for the bnsupport tool code
         */
         window.goToPage4 = function goToPage4() {
@@ -389,7 +386,7 @@ export default {
               body += `**Description:**\n ${allData.textareaFilled}`;
               dataToSend.category = allData.applicationSelected;
               dataToSend.raw = body;
-            } 
+            }
           } else if (allData.typeSelected === 'How to') {
             body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = allData.applicationSelected;

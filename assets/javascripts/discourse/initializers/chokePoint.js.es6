@@ -139,7 +139,7 @@ export default {
         let info = `[${date}] ${version} ${Discourse.User.current().get('id')}`;
         if (extraInfo) info += ` : ${extraInfo}`;
 
-        if (!Discourse.User.current().staff) {
+        if ((!Discourse.User.current().staff) && (typeof ga !== 'undefined')) {
           ga('send', 'event', 'SupportCase', type, info);
         } else {
           console.log(type, info);
@@ -148,7 +148,7 @@ export default {
         const d = new Date();
         const date = `${d.getUTCFullYear()}/${d.getUTCMonth() + 1}/${d.getUTCDate()}`;
         const info = `[${date}] ${version} ${Discourse.User.current().get('id')} generateEvent - ${e} ${navigator.userAgent}`;
-        if (!Discourse.User.current().staff) {
+        if ((!Discourse.User.current().staff) && (typeof ga !== 'undefined')) {
           ga('send', 'event', 'SupportCase', 'Failure', info);
         } else {
           console.log('Failure', info);
@@ -359,9 +359,9 @@ export default {
           const page3 = $.templates('#explanationCase');
           page3.link('#bitnamiContainer', allData);
         };
-        
+
         /**
-        * Action after clicking Next in case of Technical issue 
+        * Action after clicking Next in case of Technical issue
         * Ask user for the bnsupport tool code
         */
         window.goToPage4 = function goToPage4() {
@@ -389,7 +389,7 @@ export default {
               body += `**Description:**\n ${allData.textareaFilled}`;
               dataToSend.category = allData.applicationSelected;
               dataToSend.raw = body;
-            } 
+            }
           } else if (allData.typeSelected === 'How to') {
             body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = allData.applicationSelected;

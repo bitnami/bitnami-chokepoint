@@ -479,7 +479,7 @@ export default {
       $(document).off('click', '.search__results__result a').on('click', '.search__results__result a', function() {
         const d = new Date();
         const info = `[${d.getUTCFullYear()}/${d.getUTCMonth()+1}/${d.getUTCDate()}] ${Discourse.User.current().get('id')} : ${currentSearch} : ${$(this).attr('data-position')} : ${$(this).attr('href')}`;
-        if (!Discourse.User.current().staff) {
+        if ((!Discourse.User.current().staff) && (typeof ga !== 'undefined')) {
           ga('send', 'event', 'SupportCase', 'SearchResult', info);
         } else {
           console.log(info);

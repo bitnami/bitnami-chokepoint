@@ -17,9 +17,6 @@ export default {
           type: 'Technical issue',
         },
         {
-          type: 'Stacksmith',
-        },
-        {
           type: 'Suggestion',
         },
         {

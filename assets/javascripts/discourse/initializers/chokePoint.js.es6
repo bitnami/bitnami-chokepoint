@@ -125,6 +125,25 @@ export default {
     }
 
     /**
+    * Escape HTML special chars
+    * @param  {String} text area filles
+    */
+    function escapeHtml(text) {
+      return text.replace(/[&<>"'\/]/g, function (s) {
+        var entityMap = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': '&quot;',
+          "'": '&#39;',
+          "/": '&#x2F;'
+        };
+
+        return entityMap[s];
+      });
+    }
+
+    /**
     * Send GA event (or console.log if the user is staff)
     * @param  {String} type      Event type
     * @param  {String} extraInfo Add more text to the event data
@@ -243,6 +262,7 @@ export default {
           bnsupportFilled: null,
           bnsupportAlertShown: false,
           textareaFilled: null,
+          textareaSanitized: null,
           currentPage: 1,
           createTopic: 1,
           adaptSearch: adaptSearch,
@@ -362,6 +382,9 @@ export default {
         * Ask user for the bnsupport tool code
         */
         window.goToPage4 = function goToPage4() {
+          if (allData.textareaFilled) {
+            allData.textareaSanitized = escapeHtml(allData.textareaFilled);
+          }
           allData.currentPage = 4;
           const page4 = $.templates('#bnsupportPage');
           page4.link('#bitnamiContainer', allData);
@@ -376,6 +399,7 @@ export default {
             title: allData.titleFilled,
             typing_duration_msecs: 5000,
           };
+
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
           if (allData.typeSelected === 'Technical issue') {

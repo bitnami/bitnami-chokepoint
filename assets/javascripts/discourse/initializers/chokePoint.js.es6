@@ -4,7 +4,7 @@ const SearchResultsDefaultController = require('discourse/controllers/full-page-
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.5';
+    const version = 'v1.0.7';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -122,6 +122,25 @@ export default {
         }
         return 0;
       };
+    }
+
+    /**
+    * Escape HTML special chars
+    * @param  {String} text area filles
+    */
+    function escapeHtml(text) {
+      return text.replace(/[&<>"'\/]/g, function (s) {
+        var entityMap = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': '&quot;',
+          "'": '&#39;',
+          "/": '&#x2F;'
+        };
+
+        return entityMap[s];
+      });
     }
 
     /**
@@ -243,6 +262,7 @@ export default {
           bnsupportFilled: null,
           bnsupportAlertShown: false,
           textareaFilled: null,
+          textareaSanitized: null,
           currentPage: 1,
           createTopic: 1,
           adaptSearch: adaptSearch,
@@ -362,6 +382,9 @@ export default {
         * Ask user for the bnsupport tool code
         */
         window.goToPage4 = function goToPage4() {
+          if (allData.textareaFilled) {
+            allData.textareaSanitized = escapeHtml(allData.textareaFilled);
+          }
           allData.currentPage = 4;
           const page4 = $.templates('#bnsupportPage');
           page4.link('#bitnamiContainer', allData);

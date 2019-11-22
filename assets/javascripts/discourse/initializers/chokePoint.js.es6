@@ -4,7 +4,7 @@ const SearchResultsDefaultController = require('discourse/controllers/full-page-
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.5';
+    const version = 'v1.0.7';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -399,7 +399,6 @@ export default {
             title: allData.titleFilled,
             typing_duration_msecs: 5000,
           };
-
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
           if (allData.typeSelected === 'Technical issue') {

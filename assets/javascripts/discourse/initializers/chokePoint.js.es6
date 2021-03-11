@@ -4,7 +4,7 @@ const SearchResultsDefaultController = require('discourse/controllers/full-page-
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.7';
+    const version = 'v1.0.8';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -501,7 +501,7 @@ export default {
             try {
               $('head').append(value);
               // The load event is sent to an element when it and all sub-elements have been completely loaded
-              $(window).on('load', function() {
+              $(window).ready(function() {
                 // Obtains application name dinamically from Discourse categories
                 $.get(`${communityURL}/categories.json`)
                   .done(function(data) {

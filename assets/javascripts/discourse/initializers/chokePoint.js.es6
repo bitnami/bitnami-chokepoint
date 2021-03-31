@@ -1,10 +1,10 @@
-const NavigationDefaultController = require('discourse/controllers/navigation/default').default;
+const NavigationDefaultController = require('discourse/components/d-navigation').default;
 const SearchResultsDefaultController = require('discourse/controllers/full-page-search').default;
 
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.8';
+    const version = 'v1.0.9';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -476,7 +476,7 @@ export default {
 
     NavigationDefaultController.reopen({
       actions: {
-        createTopic: chokePoint,
+        clickCreateTopicButton: chokePoint,
       },
     });
 

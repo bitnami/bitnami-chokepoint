@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 export default {
-  name: 'search',
+  name: 'chokePointSearch',
   initialize: function() {
     /* exported initSearch */
     /* globals $:false, console:false, URLSearchParams */

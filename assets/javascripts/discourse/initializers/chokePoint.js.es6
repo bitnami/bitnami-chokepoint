@@ -297,7 +297,7 @@ export default {
         */
         window.goToPage2 = function goToPage2() {
           allData.currentPage = 2;
-          const page2 = $.templates('#search');
+          const page2 = $.templates('#chokePointSearch');
           page2.link('#bitnamiContainer', allData);
 
           /**

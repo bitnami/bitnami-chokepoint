@@ -1,10 +1,10 @@
-const NavigationDefaultController = require('discourse/controllers/navigation/default').default;
+const NavigationDefaultController = require('discourse/components/d-navigation').default;
 const SearchResultsDefaultController = require('discourse/controllers/full-page-search').default;
 
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.8';
+    const version = 'v1.0.9';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -297,7 +297,7 @@ export default {
         */
         window.goToPage2 = function goToPage2() {
           allData.currentPage = 2;
-          const page2 = $.templates('#search');
+          const page2 = $.templates('#chokePointSearch');
           page2.link('#bitnamiContainer', allData);
 
           /**
@@ -407,16 +407,16 @@ export default {
               body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n`;
               if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
               body += `**Description:**\n ${allData.textareaFilled}`;
-              dataToSend.category = allData.applicationSelected;
+              dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
               dataToSend.raw = body;
             }
           } else if (allData.typeSelected === 'How to') {
             body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = allData.applicationSelected;
+            dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
             dataToSend.raw = body;
-          } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Stacksmith') {
+          } else if (allData.typeSelected === 'Suggestion') {
             body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
-            dataToSend.category = allData.typeSelected === 'Suggestion' ? 'General' : allData.typeSelected;
+            dataToSend.category = _.filter(allData.applicationValues, {application: 'General'})[0].id;
             dataToSend.raw = body;
           }
 
@@ -476,7 +476,7 @@ export default {
 
     NavigationDefaultController.reopen({
       actions: {
-        createTopic: chokePoint,
+        clickCreateTopicButton: chokePoint,
       },
     });
 
@@ -507,10 +507,11 @@ export default {
                   .done(function(data) {
                     try {
                       data.category_list.categories.forEach(function(category) {
-                        if (category.name !== 'Staff' && category.name !== 'General') {
+                        if (category.name !== 'Staff') {
                           const object = {};
                           object.application = category.name;
                           object.slug = category.slug;
+                          object.id = category.id;
                           applicationArray.push(object);
                         }
                       });

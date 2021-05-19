@@ -19,7 +19,11 @@
     margin: auto !important;
 }
 
-.bitnami-b textarea, p.bnsupport {
+textarea.bndiagnostic {
+    height: 20em !important;
+}
+
+.bitnami-b textarea, p.bnsupport, p.bndiagnostic {
     max-width: 40em !important;
 }
 
@@ -38,6 +42,13 @@
 .bnsupport {
     min-height: unset !important;
     max-height: 2.5em !important;
+    max-width: 40em !important;
+    resize: none !important;
+}
+
+.bndiagnostic {
+    min-height: unset !important;
+    max-height: 40em !important;
     max-width: 40em !important;
     resize: none !important;
 }

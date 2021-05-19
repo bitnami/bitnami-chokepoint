@@ -4,7 +4,7 @@ const SearchResultsDefaultController = require('discourse/controllers/full-page-
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.9';
+    const version = 'v1.1.0';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -18,9 +18,6 @@ export default {
         },
         {
           type: 'Suggestion',
-        },
-        {
-          type: 'Sales & Account',
         },
       ],
       platformArray: [
@@ -39,18 +36,6 @@ export default {
               subplatform: 'Microsoft Azure',
               query: 'Azure',
             },
-            {
-              subplatform: 'Oracle Cloud Platform',
-              query: 'Oracle',
-            },
-            {
-              subplatform: 'CenturyLink',
-              query: 'CenturyLink',
-            },
-            {
-              subplatform: '1and1',
-              query: '1and1',
-            },
           ],
         },
         {
@@ -64,6 +49,9 @@ export default {
             },
             {
               subplatform: 'OS X',
+            },
+            {
+              subplatform: 'OS X VM',
             },
             {
               subplatform: 'Linux',
@@ -105,6 +93,17 @@ export default {
         {
           topic: 'Upgrade',
           query: 'upgrade OR update OR migrate',
+        },
+      ],
+      bndiagnosticReasonsArray: [
+        {
+          bndiagnosticReason: 'Reason 1',
+        },
+        {
+          bndiagnosticReason: 'Reason 2',
+        },
+        {
+          bndiagnosticReason: 'Other',
         },
       ],
     };
@@ -198,6 +197,24 @@ export default {
         $.views.settings.delimiters('[[', ']]', '^');
 
         /**
+        * Get the bndiagnostic information
+        */
+        window.getBndiagnostic = function getBndiagnostic(bnsupport) {
+          $.get(`https://76v23gpdc8.execute-api.us-east-1.amazonaws.com/jotaTestT40193/helloworld?bnsupportID=${bnsupport}`)
+            .done(function(value) {
+              return value
+            })
+            .fail(function() {
+              return "Couldn't obtain data!"
+            })
+          return `    ✓ Apache: No issues found
+              ✓ Mariadb: No issues found
+              ✓ Connectivity: No issues found
+              ✓ Wordpress: No issues found
+              ? Resources: Found possible issues`
+        }
+
+        /**
         * Adapt the search string
         */
         window.adaptSearch = function adaptSearch(platform, app, topic) {
@@ -261,11 +278,15 @@ export default {
           titleFilled: null,
           bnsupportFilled: null,
           bnsupportAlertShown: false,
+          bndiagnosticReasonsValues: dropdownData.bndiagnosticReasonsArray,
+          bndiagnosticReasonSelected: null,
+          bndiagnosticReasonFilled: null,
           textareaFilled: null,
           textareaSanitized: null,
           currentPage: 1,
           createTopic: 1,
           adaptSearch: adaptSearch,
+          getBndiagnostic: getBndiagnostic,
         };
 
         /**
@@ -368,26 +389,65 @@ export default {
         };
 
         /**
-        * Action after click on "NO" button.
-        * Show different textarea asking for information before creating the case
+        * Action after clicking Next in case of Technical issue
+        * Ask user for the bnsupport tool code
         */
         window.goToPage3 = function goToPage3() {
           allData.currentPage = 3;
-          const page3 = $.templates('#explanationCase');
+          const page3 = $.templates('#bnsupportPage');
           page3.link('#bitnamiContainer', allData);
         };
 
         /**
-        * Action after clicking Next in case of Technical issue
-        * Ask user for the bnsupport tool code
+        * Action after providing the bnsupport information
+        * Wait until we have the bndiagnostic info
+        */
+        window.goToPageWait = function goToPageWait() {
+          allData.currentPage = 40;
+          const page40 = $.templates('#waitPage');
+          page40.link('#bitnamiContainer', allData);
+          goToPage4();
+        };
+
+        /**
+        * Action after providing the bnsupport tool code
+        * Show the user the errors the tool found
         */
         window.goToPage4 = function goToPage4() {
-          if (allData.textareaFilled) {
-            allData.textareaSanitized = escapeHtml(allData.textareaFilled);
-          }
           allData.currentPage = 4;
-          const page4 = $.templates('#bnsupportPage');
+          const page4 = $.templates('#bndiagnosticPage');
           page4.link('#bitnamiContainer', allData);
+        };
+
+        /**
+        * Action after showing the bndiagnostic info
+        * and user says he didn't review it
+        * Tell the user to review it before creating the ticket
+        */
+        window.goToPage41 = function goToPage41() {
+          allData.currentPage = 41;
+          const page41 = $.templates('#bndiagnosticRequired');
+          page41.link('#bitnamiContainer', allData);
+        };
+
+        /**
+        * Bndiagnostic info was not useful
+        * Ask him for more information
+        */
+        window.goToPage5 = function goToPage5() {
+          allData.currentPage = 5;
+          const page5 = $.templates('#bndiagnosticFeedback');
+          page5.link('#bitnamiContainer', allData);
+        };
+
+        /**
+        * Action after explaining why the bndiagnostic info was not useful.
+        * Show different textarea asking for information before creating the case
+        */
+        window.goToPage6 = function goToPage6() {
+          allData.currentPage = 6;
+          const page6 = $.templates('#explanationCase');
+          page6.link('#bitnamiContainer', allData);
         };
 
         /**

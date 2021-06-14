@@ -17,6 +17,9 @@ export default {
           type: 'Technical issue',
         },
         {
+          type: 'Bitnami Support Tool',
+        },
+        {
           type: 'Suggestion',
         },
       ],
@@ -35,6 +38,14 @@ export default {
             {
               subplatform: 'Microsoft Azure',
               query: 'Azure',
+            },
+            {
+              subplatform: 'VMware Marketplace',
+              query: 'VMware',
+            },
+            {
+              subplatform: 'Bitnami Cloud Hosting',
+              query: 'Bitnami Cloud Hosting',
             },
           ],
         },
@@ -62,7 +73,7 @@ export default {
           platform: 'Containers',
         },
         {
-          platform: 'Other',
+          platform: 'Charts',
         },
       ],
       topicArray: [
@@ -97,10 +108,13 @@ export default {
       ],
       bndiagnosticReasonsArray: [
         {
-          bndiagnosticReason: 'Reason 1',
+          bndiagnosticReason: 'The documentation didn\'t make any significant change',
         },
         {
-          bndiagnosticReason: 'Reason 2',
+          bndiagnosticReason: 'I do not know how to perform the changes explained in the documentation',
+        },
+        {
+          bndiagnosticReason: 'The suggested guides are not related with my issue',
         },
         {
           bndiagnosticReason: 'Other',
@@ -202,16 +216,26 @@ export default {
         window.getBndiagnostic = function getBndiagnostic(bnsupport) {
           $.get(`https://76v23gpdc8.execute-api.us-east-1.amazonaws.com/jotaTestT40193/helloworld?bnsupportID=${bnsupport}`)
             .done(function(value) {
-              return value
+              allData.bndiagnosticOutput = value;
+              $('.button-accent').removeAttr('disabled');
+              $('.bndiagnostic__results').empty();
+              const arr = value.split("\n");
+              for (var i = 0; i < arr.length; i++) {
+                if (/\s*http.*/.test(arr[i])) {
+                  $('.bndiagnostic__results').append(`<a class="bndiagnostic__text" target="_blank" href="${arr[i]}">${arr[i]}</a>`);
+                } else {
+                  $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">${arr[i]}</pre>`);
+                }
+              }
             })
             .fail(function() {
-              return "Couldn't obtain data!"
+              const bnsupportURL="https://docs.bitnami.com/general/how-to/understand-bnsupport/#run-the-bitnami-support-tool"
+              $('.bndiagnostic__results').empty();
+              $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Couldn't obtain data or data is outdated. Please update the Bitnami Support Tool to the latest version and run it again
+
+<a href="${bnsupportURL}" target="_blank">${bnsupportURL}</a>
+</pre>`);
             })
-          return `    ✓ Apache: No issues found
-              ✓ Mariadb: No issues found
-              ✓ Connectivity: No issues found
-              ✓ Wordpress: No issues found
-              ? Resources: Found possible issues`
         }
 
         /**
@@ -277,7 +301,7 @@ export default {
           topicValues: dropdownData.topicArray.sort(propComparator('topic')),
           titleFilled: null,
           bnsupportFilled: null,
-          bnsupportAlertShown: false,
+          bndiagnosticOutput: null,
           bndiagnosticReasonsValues: dropdownData.bndiagnosticReasonsArray,
           bndiagnosticReasonSelected: null,
           bndiagnosticReasonFilled: null,
@@ -399,14 +423,23 @@ export default {
         };
 
         /**
-        * Action after providing the bnsupport information
-        * Wait until we have the bndiagnostic info
+        * Action after providing the bnsupport tool code
+        * Validate the string the user provided
         */
-        window.goToPageWait = function goToPageWait() {
-          allData.currentPage = 40;
-          const page40 = $.templates('#waitPage');
-          page40.link('#bitnamiContainer', allData);
-          goToPage4();
+        window.validateBnsupport = function validateBnsupport() {
+          const bnsupportIDRegex = new RegExp(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/);
+          if (bnsupportIDRegex.test(allData.bnsupportFilled)) {
+            if (allData.platformSelected == 'Windows' ||
+              allData.platformSelected == 'OS X' ||
+              allData.platformSelected == 'Linux') {
+              goToPage5();
+            } else {
+              goToPage4();
+            }
+          } else {
+            alert("The ID you provided is not valid");
+            goToPage3();
+          }
         };
 
         /**
@@ -417,35 +450,15 @@ export default {
           allData.currentPage = 4;
           const page4 = $.templates('#bndiagnosticPage');
           page4.link('#bitnamiContainer', allData);
-        };
-
-        /**
-        * Action after showing the bndiagnostic info
-        * and user says he didn't review it
-        * Tell the user to review it before creating the ticket
-        */
-        window.goToPage41 = function goToPage41() {
-          allData.currentPage = 41;
-          const page41 = $.templates('#bndiagnosticRequired');
-          page41.link('#bitnamiContainer', allData);
-        };
-
-        /**
-        * Bndiagnostic info was not useful
-        * Ask him for more information
-        */
-        window.goToPage5 = function goToPage5() {
-          allData.currentPage = 5;
-          const page5 = $.templates('#bndiagnosticFeedback');
-          page5.link('#bitnamiContainer', allData);
+          getBndiagnostic(allData.bnsupportFilled);
         };
 
         /**
         * Action after explaining why the bndiagnostic info was not useful.
         * Show different textarea asking for information before creating the case
         */
-        window.goToPage6 = function goToPage6() {
-          allData.currentPage = 6;
+        window.goToPage5 = function goToPage5() {
+          allData.currentPage = 5;
           const page6 = $.templates('#explanationCase');
           page6.link('#bitnamiContainer', allData);
         };
@@ -462,20 +475,24 @@ export default {
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
           if (allData.typeSelected === 'Technical issue') {
-            if (!allData.bnsupportFilled) allData.createTopic = confirm("In most cases using the Bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.\n\nCreate the topic anyway?");
-            if (allData.createTopic || allData.bnsupportFilled) {
-              body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n`;
-              if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
-              body += `**Description:**\n ${allData.textareaFilled}`;
-              dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
-              dataToSend.raw = body;
+            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n\n`;
+            if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n\n`;
+            if (allData.bndiagnosticOutput) body += `**bndiagnostic output:**\n\`\`\`
+            ${allData.bndiagnosticOutput}\n\`\`\`\n`;
+            if (allData.bndiagnosticReasonFilled) {
+              body += `**bndiagnostic failure reason:** ${allData.bndiagnosticReasonFilled}\n\n`;
+            } else if (allData.bndiagnosticReasonSelected) {
+              body += `**bndiagnostic failure reason:** ${allData.bndiagnosticReasonSelected}\n\n`;
             }
-          } else if (allData.typeSelected === 'How to') {
-            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
+            body += `**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
             dataToSend.raw = body;
-          } else if (allData.typeSelected === 'Suggestion') {
-            body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
+          } else if (allData.typeSelected === 'How to') {
+            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n\n**Description:**\n ${allData.textareaFilled}`;
+            dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
+            dataToSend.raw = body;
+          } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Bitnami Support Tool') {
+            body = `**Type:** ${allData.typeSelected}\n\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = _.filter(allData.applicationValues, {application: 'General'})[0].id;
             dataToSend.raw = body;
           }

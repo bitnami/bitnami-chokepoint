@@ -19,11 +19,15 @@
     margin: auto !important;
 }
 
-textarea.bndiagnostic {
+textarea.bndiagnostic__feedback {
     height: 20em !important;
 }
 
 .bitnami-b textarea, p.bnsupport, p.bndiagnostic {
+    max-width: 40em !important;
+}
+
+.bndiagnostic__text {
     max-width: 40em !important;
 }
 
@@ -41,7 +45,7 @@ textarea.bndiagnostic {
 
 .bnsupport {
     min-height: unset !important;
-    max-height: 2.5em !important;
+    max-height: 3em !important;
     max-width: 40em !important;
     resize: none !important;
 }
@@ -55,9 +59,9 @@ textarea.bndiagnostic {
 
 .title {
   min-height: unset !important;
-  max-height: 5em !important;
+  height: 3em !important;
+  max-height: 10em !important;
   max-width: 40em !important;
-  resize: none !important;
 }
 
 .issue {

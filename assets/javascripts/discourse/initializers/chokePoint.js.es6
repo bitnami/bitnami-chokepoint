@@ -214,13 +214,20 @@ export default {
         * Get the bndiagnostic information
         */
         window.getBndiagnostic = function getBndiagnostic(bnsupport) {
-          $.get(`https://76v23gpdc8.execute-api.us-east-1.amazonaws.com/jotaTestT40193/helloworld?bnsupportID=${bnsupport}`)
+          let endpointURL;
+          if (/community.bitnami.com/.test(window.location.host)) {
+            endpointURL="http://internal-bndiagnostic-retrieval-1263868043.us-east-1.elb.amazonaws.com"
+          } else {
+            endpointURL="http://internal-bndiagnostic-retrieval-dev-1996126494.us-east-1.elb.amazonaws.com"
+          }
+
+          $.get(`${endpointURL}?bnsupportID=${bnsupport}`)
             .done(function(value) {
               allData.bndiagnosticOutput = value;
               $('.button-accent').removeAttr('disabled');
               $('.bndiagnostic__results').empty();
               const arr = value.split("\n");
-              for (var i = 0; i < arr.length; i++) {
+              for (let i = 0; i < arr.length; i++) {
                 if (/\s*http.*/.test(arr[i])) {
                   $('.bndiagnostic__results').append(`<a class="bndiagnostic__text" target="_blank" href="${arr[i]}">${arr[i]}</a>`);
                 } else {

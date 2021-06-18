@@ -19,16 +19,13 @@
     margin: auto !important;
 }
 
-textarea.bndiagnostic__feedback {
-    height: 20em !important;
-}
-
-.bitnami-b textarea, p.bnsupport, p.bndiagnostic {
+.bitnami-b textarea, p.bnsupport, .bndiagnostic, .bndiagnostic__results {
     max-width: 40em !important;
 }
 
 .bndiagnostic__text {
-    max-width: 40em !important;
+    max-width: 600px !important;
+    white-space: pre-wrap;
 }
 
 .tag-small {

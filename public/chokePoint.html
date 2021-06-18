@@ -113,7 +113,6 @@
     <p class="bndiagnostic">The Bitnami Diagnostic Tool is a self-service command line tool that evaluates your configuration files and logs for errors and provides you with useful information to fix them.</p>
     <p class="bndiagnostic">Did you review this information?</p>
     <div class="bndiagnostic__results">
-      <pre class="bndiagnostic__text">Loading results...</pre>
     </div>
   </div>
 </script>
@@ -284,8 +283,6 @@
                 [[/if]]
               [[/if]]
             [[/if]]
-          [[else typeSelected == 'Sales & Account']]
-            <p>For sales and account questions, we will help you in our HelpDesk service.</p>
           [[else typeSelected == 'Suggestion' || typeSelected == 'Bitnami Support Tool']]
             [^[include tmpl="#title"/]]
             [^[include tmpl="#issue"/]]
@@ -294,9 +291,6 @@
         [^[if ((typeSelected == 'How to' || typeSelected == 'Technical issue') && (platformSelected && !(platformSelected == 'Containers' || platformSelected == 'Charts')) && applicationSelected && topicSelected)]]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="goToPage2()">Next</button>
-        [^[else typeSelected == 'Sales & Account']]
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="goToHelpdesk()">Go to Bitnami HelpDesk</button>
         [^[else typeSelected == 'Suggestion' || typeSelected == 'Bitnami Support Tool']]
           <button class="button" onclick="cancel()">Cancel</button>
           <button class="button button-accent" onclick="create()">Create topic</button>

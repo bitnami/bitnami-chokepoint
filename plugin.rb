@@ -1,6 +1,6 @@
 # name: bitnami-chokepoint
 # about: Bitnami Discourse topic creation entrypoint
-# version: 1.0.9
+# version: 1.1.0
 # authors: crhernandez, jsalmeron
 
 register_asset "javascripts/discourse/initializers/search.js.es6"

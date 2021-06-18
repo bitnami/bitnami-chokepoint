@@ -214,6 +214,8 @@ export default {
         * Get the bndiagnostic information
         */
         window.getBndiagnostic = function getBndiagnostic(bnsupport) {
+          $('.bndiagnostic__results').empty();
+          $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Loading results...</pre>`);
           let endpointURL;
           if (/community.bitnami.com/.test(window.location.host)) {
             endpointURL="http://internal-bndiagnostic-retrieval-1263868043.us-east-1.elb.amazonaws.com"

@@ -24,7 +24,7 @@
 }
 
 .bndiagnostic__text {
-    max-width: 600px !important;
+    max-width: 49em !important;
     white-space: pre-wrap;
 }
 

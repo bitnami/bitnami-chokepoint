@@ -86,13 +86,13 @@
 
 <script id="title" type="text/x-jsrender">
   <h4>Title</h4>
-  <textarea class="title" placeholder="Summarise your [[if typeSelected == 'Technical issue' || typeSelected == 'Bitnami Support Tool']]issue[[else typeSelected == 'How to']]question[[else typeSelected == 'Suggestion']]suggestion[[/if]] in less than 120 characters" maxlength="120" data-link="titleFilled"></textarea>
+  <textarea class="title" placeholder="Summarize your [[if typeSelected == 'Technical issue' || typeSelected == 'Bitnami Support Tool']]issue[[else typeSelected == 'How to']]question[[else typeSelected == 'Suggestion']]suggestion[[/if]] in less than 120 characters" maxlength="120" data-link="titleFilled"></textarea>
 </script>
 
 <script id="bndiagnostic-feedback" type="text/x-jsrender">
   <div>
     <h4>Bitnami Diagnostic Tool Feedback</h4>
-    <p class="bndiagnostic">Please let us know why the information the tool provided was not useful to you</p>
+    <p class="bndiagnostic">Please let us know why the information the tool provided was not useful</p>
     <select tabindex="-1" style="display: block;" data-link="bndiagnosticReasonSelected">
       <option value="" disabled selected>Select a reason…</option>
       [[for bndiagnosticReasonsValues]]
@@ -101,7 +101,7 @@
     </select>
     [^[if bndiagnosticReasonSelected]]
       [^[if bndiagnosticReasonSelected == 'Other']]
-        <textarea required class="bndiagnostic_feedback" placeholder="Include useful information for us to improve the diagnostic tool and help users in the future based on your feedback" data-link="bndiagnosticReasonFilled"></textarea>
+        <textarea required class="bndiagnostic_feedback" placeholder="Include useful information for us to improve the diagnostic tool and help users in the future" data-link="bndiagnosticReasonFilled"></textarea>
       [[/if]]
     [[/if]]
   </div>
@@ -110,7 +110,7 @@
 <script id="bndiagnostic" type="text/x-jsrender">
   <div>
     <h4>Bitnami Diagnostic Tool</h4>
-    <p class="bndiagnostic">The Bitnami Diagnostic Tool is a self-service command line tool that evaluates your configuration files and logs for errors and provides you with useful information to fix them.</p>
+    <p class="bndiagnostic">The Bitnami Diagnostic Tool is a self-service command line tool that evaluates your configuration files and logs looking for errors and provides you with useful information to fix them.</p>
     <p class="bndiagnostic">Did you review this information?</p>
     <div class="bndiagnostic__results">
     </div>

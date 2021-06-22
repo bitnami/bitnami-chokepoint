@@ -8,6 +8,12 @@ export default {
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
+    let endpointURL;
+    if (/community.bitnami.com/.test(window.location.host)) {
+      endpointURL="http://internal-bndiagnostic-retrieval-1263868043.us-east-1.elb.amazonaws.com"
+    } else {
+      endpointURL="http://internal-bndiagnostic-retrieval-dev-1996126494.us-east-1.elb.amazonaws.com"
+    }
     const dropdownData = {
       typeArray: [
         {
@@ -108,7 +114,7 @@ export default {
       ],
       bndiagnosticReasonsArray: [
         {
-          bndiagnosticReason: 'The documentation didn\'t make any significant change',
+          bndiagnosticReason: 'The documentation did not make any significant change',
         },
         {
           bndiagnosticReason: 'I do not know how to perform the changes explained in the documentation',
@@ -216,12 +222,6 @@ export default {
         window.getBndiagnostic = function getBndiagnostic(bnsupport) {
           $('.bndiagnostic__results').empty();
           $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Loading results...</pre>`);
-          let endpointURL;
-          if (/community.bitnami.com/.test(window.location.host)) {
-            endpointURL="http://internal-bndiagnostic-retrieval-1263868043.us-east-1.elb.amazonaws.com"
-          } else {
-            endpointURL="http://internal-bndiagnostic-retrieval-dev-1996126494.us-east-1.elb.amazonaws.com"
-          }
 
           $.get(`${endpointURL}?bnsupportID=${bnsupport}`)
             .done(function(value) {
@@ -464,7 +464,7 @@ export default {
 
         /**
         * Action after explaining why the bndiagnostic info was not useful.
-        * Show different textarea asking for information before creating the case
+        * Show a different textarea asking for information before creating the case
         */
         window.goToPage5 = function goToPage5() {
           allData.currentPage = 5;

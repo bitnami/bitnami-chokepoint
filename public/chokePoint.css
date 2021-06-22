@@ -26,6 +26,7 @@
 .bndiagnostic__text {
     max-width: 49em !important;
     white-space: pre-wrap;
+    display: table;
 }
 
 .tag-small {

@@ -243,6 +243,8 @@ export default {
               $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Couldn't obtain data or data is outdated. Please update the Bitnami Support Tool to the latest version and run it again
 
 <a href="${bnsupportURL}" target="_blank">${bnsupportURL}</a>
+
+If you continue running into issues when running the Bitnami Support tool, please create a new support request using "Bitnami Support Tool" option when clicking on "+ New Topic".
 </pre>`);
             })
         }

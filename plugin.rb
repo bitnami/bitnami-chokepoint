@@ -7,5 +7,5 @@ register_asset "javascripts/discourse/initializers/search.js.es6"
 register_asset "javascripts/discourse/initializers/chokePoint.js.es6"
 
 extend_content_security_policy(
-  script_src: ['https://76v23gpdc8.execute-api.us-east-1.amazonaws.com'],
+  script_src: ['http://internal-bndiagnostic-retrieval-1263868043.us-east-1.elb.amazonaws.com', 'http://internal-bndiagnostic-retrieval-dev-1996126494.us-east-1.elb.amazonaws.com'],
 )

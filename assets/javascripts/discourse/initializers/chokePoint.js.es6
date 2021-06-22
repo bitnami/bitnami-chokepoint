@@ -10,9 +10,9 @@ export default {
     const communityURL = window.location.origin;
     let endpointURL;
     if (/community.bitnami.com/.test(window.location.host)) {
-      endpointURL="http://internal-bndiagnostic-retrieval-1263868043.us-east-1.elb.amazonaws.com"
+      endpointURL="https://bndiagnostic-retrieval.web.bitnami.net"
     } else {
-      endpointURL="http://internal-bndiagnostic-retrieval-dev-1996126494.us-east-1.elb.amazonaws.com"
+      endpointURL="https://bndiagnostic-retrieval.dev.bitnami.net"
     }
     const dropdownData = {
       typeArray: [

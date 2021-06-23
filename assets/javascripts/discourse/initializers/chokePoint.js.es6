@@ -4,7 +4,7 @@ const SearchResultsDefaultController = require('discourse/controllers/full-page-
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.1.0';
+    const version = 'v1.1.1';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
@@ -14,122 +14,7 @@ export default {
     } else {
       endpointURL="https://bndiagnostic-retrieval.dev.bitnami.net"
     }
-    const dropdownData = {
-      typeArray: [
-        {
-          type: 'How to',
-        },
-        {
-          type: 'Technical issue',
-        },
-        {
-          type: 'Bitnami Support Tool',
-        },
-        {
-          type: 'Suggestion',
-        },
-      ],
-      platformArray: [
-        {
-          platform: 'Clouds',
-          subplatforms: [
-            {
-              subplatform: 'Google Cloud Platform',
-              query: 'Google',
-            },
-            {
-              subplatform: 'AWS',
-              query: 'AWS',
-            },
-            {
-              subplatform: 'Microsoft Azure',
-              query: 'Azure',
-            },
-            {
-              subplatform: 'VMware Marketplace',
-              query: 'VMware',
-            },
-            {
-              subplatform: 'Bitnami Cloud Hosting',
-              query: 'Bitnami Cloud Hosting',
-            },
-          ],
-        },
-        {
-          platform: 'Virtual Machines',
-        },
-        {
-          platform: 'Installers',
-          subplatforms: [
-            {
-              subplatform: 'Windows',
-            },
-            {
-              subplatform: 'OS X',
-            },
-            {
-              subplatform: 'OS X VM',
-            },
-            {
-              subplatform: 'Linux',
-            },
-          ],
-        },
-        {
-          platform: 'Containers',
-        },
-        {
-          platform: 'Charts',
-        },
-      ],
-      topicArray: [
-        {
-          topic: 'Email configuration (SMTP)',
-          query: 'SMTP OR mail OR Troubleshoot',
-        },
-        {
-          topic: 'Connectivity (SSH/FTP)',
-          query: 'SSH OR FTP OR Troubleshoot',
-        },
-        {
-          topic: 'Secure Connections (SSL/HTTPS)',
-          query: 'SSL OR HTTPS OR Troubleshoot',
-        },
-        {
-          topic: 'Permissions',
-          query: 'permissions OR plugin OR Troubleshoot',
-        },
-        {
-          topic: 'Credentials',
-          query: 'login OR credentials OR password',
-        },
-        {
-          topic: 'Domain Name (DNS)',
-          query: 'DNS OR domain',
-        },
-        {
-          topic: 'Upgrade',
-          query: 'upgrade OR update OR migrate',
-        },
-      ],
-      bndiagnosticReasonsArray: [
-        {
-          bndiagnosticReason: 'The tool could not find any issue',
-        },
-        {
-          bndiagnosticReason: 'The documentation did not make any significant change',
-        },
-        {
-          bndiagnosticReason: 'I do not know how to perform the changes explained in the documentation',
-        },
-        {
-          bndiagnosticReason: 'The suggested guides are not related with my issue',
-        },
-        {
-          bndiagnosticReason: 'Other',
-        },
-      ],
-    };
+    let chokepointMetadata;
 
     /**
     * Sort objects element alphabetically
@@ -220,6 +105,27 @@ export default {
         $.views.settings.delimiters('[[', ']]', '^');
 
         /**
+        * Get the useful links information
+        */
+        window.getUsefulLinks = function getUsefulLinks(usefulLinks, topicArray, app, topic) {
+          $('.useful__links__results').empty();
+          $('.useful__links__results').append(`<pre class="useful__link">Loading results...</pre>`);
+
+          const topicID = _.filter(topicArray, {topic: topic})[0].id;
+          let arr = usefulLinks[topicID]["common"];
+
+          const appID = app.replace(/\s+/g, '-').toLowerCase();
+          if (usefulLinks[topicID][appID]) {
+            arr = arr.concat(usefulLinks[topicID][appID]);
+          }
+
+          $('.useful__links__results').empty();
+          for (let i = 0; i < arr.length; i++) {
+            $('.useful__links__results').append(`<a class="useful__link" target="_blank" href="${arr[i]}">${arr[i]}</a>`);
+          }
+        }
+
+        /**
         * Get the bndiagnostic information
         */
         window.getBndiagnostic = function getBndiagnostic(bnsupport) {
@@ -252,78 +158,26 @@ If you continue running into issues when running the Bitnami Support tool, pleas
             })
         }
 
-        /**
-        * Adapt the search string
-        */
-        window.adaptSearch = function adaptSearch(platform, app, topic) {
-          const limitSearch = 10;
-          let searchString = '';
-          let topicQuery = '';
-          let platformQuery = '';
-          let appQuery = '';
-
-          if (topic !== 'Other') topicQuery = _.filter(dropdownData.topicArray, {topic: topic})[0].query;
-
-          if (platform !== 'Other') {
-            // It returns index of the value in array and -1 if value is not present in array
-            if ($.inArray(platform, ['Virtual Machines', 'Windows', 'OS X', 'Linux']) === -1) {
-              platformQuery = _.filter(_.filter(dropdownData.platformArray, {platform: 'Clouds'})[0]
-                .subplatforms, {subplatform: platform})[0].query;
-            } else {
-              platformQuery = platform;
-            }
-          }
-
-          if (app !== 'General') appQuery = app;
-
-          if (app === 'WordPress + NGINX + SSL') {
-            appQuery = 'WordPress NGINX';
-          }
-
-          searchString = appQuery;
-
-          if (searchString) {
-            if (platformQuery) searchString += ` OR ${platformQuery}`;
-          } else {
-            searchString += `${platformQuery}`;
-          }
-
-          if (searchString) {
-            if (topicQuery) searchString += ` OR ${topicQuery}`;
-          } else {
-            searchString += `${topicQuery}`;
-          }
-
-          // If there are more than limitSearch terms in the request, we limit the search
-          if (searchString.split(' ').length > limitSearch) {
-            searchString = searchString.split(' ').slice(0, limitSearch);
-            if (searchString[limitSearch - 1] === 'OR' || searchString[limitSearch - 1] === 'or') searchString.pop();
-            searchString = searchString.join(' ');
-          }
-
-          return searchString;
-        };
-
         const allData = {
           typeSelected: null,
-          typeValues: dropdownData.typeArray,
+          typeValues: chokepointMetadata.typeArray,
           platformSelected: null,
-          platformValues: dropdownData.platformArray,
+          platformValues: chokepointMetadata.platformArray,
           applicationSelected: null,
           applicationValues: applicationArray,
           topicSelected: null,
-          topicValues: dropdownData.topicArray.sort(propComparator('topic')),
+          topicValues: chokepointMetadata.topicArray.sort(propComparator('topic')),
           titleFilled: null,
           bnsupportFilled: null,
           bndiagnosticOutput: null,
-          bndiagnosticReasonsValues: dropdownData.bndiagnosticReasonsArray,
+          bndiagnosticReasonsValues: chokepointMetadata.bndiagnosticReasonsArray,
           bndiagnosticReasonSelected: null,
           bndiagnosticReasonFilled: null,
           textareaFilled: null,
           textareaSanitized: null,
           currentPage: 1,
           createTopic: 1,
-          adaptSearch: adaptSearch,
+          getUsefulLinks: getUsefulLinks,
           getBndiagnostic: getBndiagnostic,
         };
 
@@ -356,74 +210,9 @@ If you continue running into issues when running the Bitnami Support tool, pleas
         */
         window.goToPage2 = function goToPage2() {
           allData.currentPage = 2;
-          const page2 = $.templates('#chokePointSearch');
+          const page2 = $.templates('#chokepointUsefulLinks');
           page2.link('#bitnamiContainer', allData);
-
-          /**
-          * Delay the current function to avoid a huge amount of requests
-          */
-          const delay = (function() {
-            let timer = 0;
-            return function(callback, ms) {
-              clearTimeout(timer);
-              timer = setTimeout(callback, ms);
-            };
-          }());
-
-          initSearch(
-            '.search',
-            'f04d497ee402aea402aed71219175b9a',
-            {
-              filters: [
-                {
-                  label: 'All Bitnami sites',
-                  filters: [],
-                  default: true,
-                },
-                {
-                  label: 'FAQ',
-                  filters: ['docs.bitami.com', '', 'faq'],
-                },
-                {
-                  label: 'How-To Guides',
-                  filters: ['docs.bitami.com', '', 'how-to'],
-                },
-                {
-                  label: 'Support Forums',
-                  filters: ['community.bitnami.com'],
-                },
-                {
-                  label: 'Documentation',
-                  filters: ['docs.bitnami.com'],
-                },
-              ],
-              inline: true,
-              predefinedFilters: [],
-              categoryToShow: 0,
-              perPage: 4,
-              useHistory: false,
-              onSearch: function(search) {
-                delay(function() {
-                  // Generate Search event when the user modify the search box (also the first time)
-                  generateEvent('Search', search);
-                }, 2500);
-              },
-            }
-          );
-
-          $('.dropdown').on('click', function() {
-            const $this = $(this);
-
-            if ($this.hasClass('dropdown-open')) {
-              $this.removeClass('dropdown-open');
-              $this.find('.button-dropdown').removeClass('button-dropdown-open');
-              $this.find('.dropdown__list').attr('aria-hidden', true);
-            } else {
-              $this.addClass('dropdown-open');
-              $this.find('.button-dropdown').addClass('button-dropdown-open');
-              $this.find('.dropdown__list').attr('aria-hidden', false);
-            }
-          });
+          getUsefulLinks(chokepointMetadata.usefulLinks, chokepointMetadata.topicArray, allData.applicationSelected, allData.topicSelected);
         };
 
         /**
@@ -592,30 +381,38 @@ If you continue running into issues when running the Bitnami Support tool, pleas
               $('head').append(value);
               // The load event is sent to an element when it and all sub-elements have been completely loaded
               $(window).ready(function() {
-                // Obtains application name dinamically from Discourse categories
-                $.get(`${communityURL}/categories.json`)
-                  .done(function(data) {
-                    try {
-                      data.category_list.categories.forEach(function(category) {
-                        if (category.name !== 'Staff') {
-                          const object = {};
-                          object.application = category.name;
-                          object.slug = category.slug;
-                          object.id = category.id;
-                          applicationArray.push(object);
+                $.get('https://downloads.bitnami.com/files/community/chokepoint.json')
+                  .done(function(metadata) {
+                    chokepointMetadata = metadata;
+                    // Obtains application name dinamically from Discourse categories
+                    $.get(`${communityURL}/categories.json`)
+                      .done(function(data) {
+                        try {
+                          data.category_list.categories.forEach(function(category) {
+                            if (category.name !== 'Staff') {
+                              const object = {};
+                              object.application = category.name;
+                              object.slug = category.slug;
+                              object.id = category.id;
+                              applicationArray.push(object);
+                            }
+                          });
+                          applicationArray.sort(propComparator('application'));
+                          $('#create-topic').show();
+                          showChokePoint = true;
+                        } catch (e) {
+                          // Error managing categories
+                          withoutChokepoint(`Error managing categories - ${e}`);
                         }
+                      })
+                      .fail(function() {
+                        // Error dowloading categories
+                        withoutChokepoint('Error downloading categories');
                       });
-                      applicationArray.sort(propComparator('application'));
-                      $('#create-topic').show();
-                      showChokePoint = true;
-                    } catch (e) {
-                      // Error managing categories
-                      withoutChokepoint(`Error managing categories - ${e}`);
-                    }
                   })
                   .fail(function() {
-                    // Error dowloading categories
-                    withoutChokepoint('Error downloading categories');
+                    // Error dowloading chokepoint.json
+                    withoutChokepoint('Error getting chokepoint metadata');
                   });
               });
             } catch (e) {

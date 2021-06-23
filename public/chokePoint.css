@@ -11,6 +11,23 @@
     transform: translateX(-50%) !important;
 }
 
+.bitnami-b .button-cancel {
+    background-color: #BD5369 !important;
+    border-color: #A3394F !important;
+    color: #fff !important;
+}
+
+.bitnami-b .button-cancel:hover {
+    background-color: #B8425A !important;
+    border-color: #913346 !important;
+    color: #fff !important;
+}
+
+.bitnami-b .button-cancel:active {
+    background-color:#A3394F !important;
+    box-shadow:inset 1px 1px 2px rgba(55,71,79,.25) !important;
+}
+
 .reply-as-new-topic {
   display: none;
 }

@@ -41,7 +41,7 @@
 
 <script id="application" type="text/x-jsrender">
   <h4 class="margin-t-big">What application are you using?</h4>
-  [[if currentPage > 2]]
+  [[if currentPage >= 2]]
   <select disabled tabindex="-1" style="display: block;" data-link="applicationSelected">
     <option value="General">General</option>
     [[for applicationValues]]
@@ -107,6 +107,16 @@
   </div>
 </script>
 
+<script id="useful-links" type="text/x-jsrender">
+  <div>
+    <h4>Suggested Articles</h4>
+    <p class="useful__links__text">Before continuing, please review if any of these articles answer your question. Were they useful?</p>
+    <div class="useful__links__results">
+    </div>
+    <br/>
+  </div>
+</script>
+
 <script id="bndiagnostic" type="text/x-jsrender">
   <div>
     <h4>Bitnami Diagnostic Tool</h4>
@@ -144,38 +154,28 @@
   </div>
 </script>
 
-<script id="chokePointSearch" type="text/x-jsrender">
+<script id="chokepointUsefulLinks" type="text/x-jsrender">
   <div class="row collapse-b-tablet">
-    <div class="col-12">
-      <div class="search margin-t-small">
-        <h3 class="margin-t-small">Suggested Articles </h3>
-        <p class="margin-b-normal">Before continuing, please review if any of these articles answer your question</p>
-        <div class="input-group">
-          <input id="search" type="search" placeholder="Search" class="form-control margin-t-small" value="[[:adaptSearch(platformSelected, applicationSelected, topicSelected)]]"/>
-          <div class="dropdown dropdown-right filters">
-            <button class="button button-dropdown" aria-haspopup="true">All Bitnami sites</button>
-            <ul class="dropdown__list remove-style elevation-1 slide-in margin-t-normal" aria-hidden="true" aria-label="submenu">
-              <li class="search__filter" data-item="1"><a>FAQ</a></li>
-              <li class="search__filter" data-item="2"><a>How-To Guides</a></li>
-              <li class="search__filter" data-item="3"><a>Support Forums</a></li>
-              <li class="search__filter" data-item="4"><a>Documentation</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="search__results padding-h-big"></div>
-      </div>
+    <div class="col-5 margin-h-big">
+      <h3 class="margin-t-small margin-b-normal">Useful links</h3>
+      [^[include tmpl="#type"/]]
+      [^[include tmpl="#platform"/]]
+      [^[include tmpl="#application"/]]
+      [^[include tmpl="#topic"/]]
     </div>
-  </div>
-  <div>
-    <h4 class="margin-t-small">Have you found what you were looking for?</h4>
-    [^[if typeSelected == 'Technical issue']]
-      <button class="button button-action" onclick="goToPage3()">No</button>
-    [[else]]
-      <button class="button button-action" onclick="goToPage5()">No</button>
-    [[/if]]
-    <button class="button button-accent" onclick="cancel()">Yes</button>
-    <div class="text-r padding-r-normal padding-t-normal" style="float: right">
-      <a onclick="goToPage1()">Go back</a>
+    <div class="col-6 margin-h-big">
+      [^[include tmpl="#useful-links"/]]
+      <div class="margin-t-small">
+        <button class="button button-cancel" onclick="cancel()">Cancel</button>
+        [^[if typeSelected == 'Technical issue']]
+          <button class="button" onclick="goToPage3()">No, those links were not useful</button>
+        [[else]]
+          <button class="button" onclick="goToPage5()">No, those links were not useful</button>
+        [[/if]]
+        <div class="text-r padding-r-normal padding-t-normal" style="float: right">
+          <a onclick="goToPage1()">Go back</a>
+        </div>
+      </div>
     </div>
   </div>
 </script>
@@ -196,8 +196,8 @@
         [^[include tmpl="#bndiagnostic-feedback"/]]
       [[/if]]
       <div class="margin-t-small">
-        <button class="button" onclick="cancel()">Cancel</button>
-        <button class="button button-accent" onclick="create()">Create Topic</button>
+        <button class="button button-cancel" onclick="cancel()">Cancel</button>
+        <button class="button" onclick="create()">Create Topic</button>
         <div class="text-r padding-r-giant padding-t-normal" style="float: right">
           [^[if typeSelected != 'Technical issue']]
             <a onclick="goToPage2()">Go back</a>
@@ -222,8 +222,8 @@
     <div class="col-6 margin-h-big">
       [^[include tmpl="#bndiagnostic"/]]
       <div class="margin-t-small">
-      <button class="button" onclick="cancel()">Cancel</button>
-        <button class="button button-accent" onclick="goToPage5()" disabled="true">Yes, but it was not useful</button>
+      <button class="button button-cancel" onclick="cancel()">Cancel</button>
+        <button class="button" onclick="goToPage5()" disabled="true">Yes, but it was not useful</button>
         <div class="text-r padding-r-giant padding-t-normal" style="float: right">
           <a onclick="goToPage3()">Go back</a>
         </div>
@@ -244,8 +244,8 @@
     <div class="col-6 margin-h-big">
       [^[include tmpl="#bnsupport"/]]
       <div class="margin-t-small">
-        <button class="button" onclick="cancel()">Cancel</button>
-        <button class="button button-accent" onclick="validateBnsupport()">Next</button>
+        <button class="button button-cancel" onclick="cancel()">Cancel</button>
+        <button class="button" onclick="validateBnsupport()">Next</button>
         <div class="text-r padding-r-giant padding-t-normal" style="float: right">
           <a onclick="goToPage2()">Go back</a>
         </div>
@@ -289,21 +289,21 @@
           [[/if]]
         [[/if]]
         [^[if ((typeSelected == 'How to' || typeSelected == 'Technical issue') && (platformSelected && !(platformSelected == 'Containers' || platformSelected == 'Charts')) && applicationSelected && topicSelected)]]
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="goToPage2()">Next</button>
+          <button class="button button-cancel" onclick="cancel()">Cancel</button>
+          <button class="button" onclick="goToPage2()">Next</button>
         [^[else typeSelected == 'Suggestion' || typeSelected == 'Bitnami Support Tool']]
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="create()">Create topic</button>
+          <button class="button button-cancel" onclick="cancel()">Cancel</button>
+          <button class="button" onclick="create()">Create topic</button>
         [^[else platformSelected == 'Containers']]
           <p>The Bitnami Community for container issues is located on GitHub. You can create a GitHub issue on the Issues section of the Bitnami container's repository.</p>
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="window.open('https://github.com/bitnami/','_blank')">Go to Bitnami GitHub</button>
+          <button class="button button-cancel" onclick="cancel()">Cancel</button>
+          <button class="button" onclick="window.open('https://github.com/bitnami/','_blank')">Go to Bitnami GitHub</button>
         [^[else platformSelected == 'Charts']]
           <p>The Bitnami Community for chart issues is located on GitHub. You can create a GitHub issue on the Issues section of the Bitnami Chart's repository.</p>
-          <button class="button" onclick="cancel()">Cancel</button>
-          <button class="button button-accent" onclick="window.open('https://github.com/bitnami/charts/issues','_blank')">Go to Bitnami Charts GitHub</button>
+          <button class="button button-cancel" onclick="cancel()">Cancel</button>
+          <button class="button" onclick="window.open('https://github.com/bitnami/charts/issues','_blank')">Go to Bitnami Charts GitHub</button>
         [[else]]
-            <button class="button" onclick="cancel()">Cancel</button>
+            <button class="button button-cancel" onclick="cancel()">Cancel</button>
         [[/if]]
       </div>
     </div>

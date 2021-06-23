@@ -41,7 +41,7 @@
     margin-top: unset !important;
 }
 
-.bnsupport {
+textarea.bnsupport {
     min-height: unset !important;
     max-height: 3em !important;
     max-width: 40em !important;

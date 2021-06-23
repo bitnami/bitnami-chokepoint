@@ -240,7 +240,7 @@ export default {
             .fail(function() {
               const bnsupportURL="https://docs.bitnami.com/general/how-to/understand-bnsupport/#run-the-bitnami-support-tool"
               $('.bndiagnostic__results').empty();
-              $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Couldn't obtain data or data is outdated. Please update the Bitnami Support Tool to the latest version and run it again
+              $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Couldn't obtain data or data is outdated (older than 2 hours). Please update the Bitnami Support Tool to the latest version and run it again
 
 <a href="${bnsupportURL}" target="_blank">${bnsupportURL}</a>
 

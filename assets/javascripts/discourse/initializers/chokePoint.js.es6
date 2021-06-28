@@ -114,6 +114,9 @@ export default {
       ],
       bndiagnosticReasonsArray: [
         {
+          bndiagnosticReason: 'The tool could not find any issue',
+        },
+        {
           bndiagnosticReason: 'The documentation did not make any significant change',
         },
         {
@@ -488,8 +491,7 @@ If you continue running into issues when running the Bitnami Support tool, pleas
           if (allData.typeSelected === 'Technical issue') {
             body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n\n`;
             if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n\n`;
-            if (allData.bndiagnosticOutput) body += `**bndiagnostic output:**\n\`\`\`
-            ${allData.bndiagnosticOutput}\n\`\`\`\n`;
+            if (allData.bndiagnosticOutput) body += `**bndiagnostic output:**\n\`\`\`${allData.bndiagnosticOutput}\`\`\`\n`;
             if (allData.bndiagnosticReasonFilled) {
               body += `**bndiagnostic failure reason:** ${allData.bndiagnosticReasonFilled}\n\n`;
             } else if (allData.bndiagnosticReasonSelected) {

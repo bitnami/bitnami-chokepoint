@@ -4,10 +4,16 @@ const SearchResultsDefaultController = require('discourse/controllers/full-page-
 export default {
   name: 'chokepoint',
   initialize: function() {
-    const version = 'v1.0.9';
+    const version = 'v1.1.0';
     let showChokePoint = false;
     const applicationArray = [];
     const communityURL = window.location.origin;
+    let endpointURL;
+    if (/community.bitnami.com/.test(window.location.host)) {
+      endpointURL="https://bndiagnostic-retrieval.web.bitnami.net"
+    } else {
+      endpointURL="https://bndiagnostic-retrieval.dev.bitnami.net"
+    }
     const dropdownData = {
       typeArray: [
         {
@@ -17,10 +23,10 @@ export default {
           type: 'Technical issue',
         },
         {
-          type: 'Suggestion',
+          type: 'Bitnami Support Tool',
         },
         {
-          type: 'Sales & Account',
+          type: 'Suggestion',
         },
       ],
       platformArray: [
@@ -40,16 +46,12 @@ export default {
               query: 'Azure',
             },
             {
-              subplatform: 'Oracle Cloud Platform',
-              query: 'Oracle',
+              subplatform: 'VMware Marketplace',
+              query: 'VMware',
             },
             {
-              subplatform: 'CenturyLink',
-              query: 'CenturyLink',
-            },
-            {
-              subplatform: '1and1',
-              query: '1and1',
+              subplatform: 'Bitnami Cloud Hosting',
+              query: 'Bitnami Cloud Hosting',
             },
           ],
         },
@@ -66,6 +68,9 @@ export default {
               subplatform: 'OS X',
             },
             {
+              subplatform: 'OS X VM',
+            },
+            {
               subplatform: 'Linux',
             },
           ],
@@ -74,7 +79,7 @@ export default {
           platform: 'Containers',
         },
         {
-          platform: 'Other',
+          platform: 'Charts',
         },
       ],
       topicArray: [
@@ -105,6 +110,23 @@ export default {
         {
           topic: 'Upgrade',
           query: 'upgrade OR update OR migrate',
+        },
+      ],
+      bndiagnosticReasonsArray: [
+        {
+          bndiagnosticReason: 'The tool could not find any issue',
+        },
+        {
+          bndiagnosticReason: 'The documentation did not make any significant change',
+        },
+        {
+          bndiagnosticReason: 'I do not know how to perform the changes explained in the documentation',
+        },
+        {
+          bndiagnosticReason: 'The suggested guides are not related with my issue',
+        },
+        {
+          bndiagnosticReason: 'Other',
         },
       ],
     };
@@ -198,6 +220,39 @@ export default {
         $.views.settings.delimiters('[[', ']]', '^');
 
         /**
+        * Get the bndiagnostic information
+        */
+        window.getBndiagnostic = function getBndiagnostic(bnsupport) {
+          $('.bndiagnostic__results').empty();
+          $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Loading results...</pre>`);
+
+          $.get(`${endpointURL}?bnsupportID=${bnsupport}`)
+            .done(function(value) {
+              allData.bndiagnosticOutput = value;
+              $('.button-accent').removeAttr('disabled');
+              $('.bndiagnostic__results').empty();
+              const arr = value.split("\n");
+              for (let i = 0; i < arr.length; i++) {
+                if (/\s*http.*/.test(arr[i])) {
+                  $('.bndiagnostic__results').append(`<a class="bndiagnostic__text" target="_blank" href="${arr[i]}">${arr[i]}</a>`);
+                } else {
+                  $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">${arr[i]}</pre>`);
+                }
+              }
+            })
+            .fail(function() {
+              const bnsupportURL="https://docs.bitnami.com/general/how-to/understand-bnsupport/#run-the-bitnami-support-tool"
+              $('.bndiagnostic__results').empty();
+              $('.bndiagnostic__results').append(`<pre class="bndiagnostic__text">Couldn't obtain data or data is outdated (older than 2 hours). Please update the Bitnami Support Tool to the latest version and run it again
+
+<a href="${bnsupportURL}" target="_blank">${bnsupportURL}</a>
+
+If you continue running into issues when running the Bitnami Support tool, please create a new support request using "Bitnami Support Tool" option when clicking on "+ New Topic".
+</pre>`);
+            })
+        }
+
+        /**
         * Adapt the search string
         */
         window.adaptSearch = function adaptSearch(platform, app, topic) {
@@ -260,12 +315,16 @@ export default {
           topicValues: dropdownData.topicArray.sort(propComparator('topic')),
           titleFilled: null,
           bnsupportFilled: null,
-          bnsupportAlertShown: false,
+          bndiagnosticOutput: null,
+          bndiagnosticReasonsValues: dropdownData.bndiagnosticReasonsArray,
+          bndiagnosticReasonSelected: null,
+          bndiagnosticReasonFilled: null,
           textareaFilled: null,
           textareaSanitized: null,
           currentPage: 1,
           createTopic: 1,
           adaptSearch: adaptSearch,
+          getBndiagnostic: getBndiagnostic,
         };
 
         /**
@@ -368,26 +427,54 @@ export default {
         };
 
         /**
-        * Action after click on "NO" button.
-        * Show different textarea asking for information before creating the case
+        * Action after clicking Next in case of Technical issue
+        * Ask user for the bnsupport tool code
         */
         window.goToPage3 = function goToPage3() {
           allData.currentPage = 3;
-          const page3 = $.templates('#explanationCase');
+          const page3 = $.templates('#bnsupportPage');
           page3.link('#bitnamiContainer', allData);
         };
 
         /**
-        * Action after clicking Next in case of Technical issue
-        * Ask user for the bnsupport tool code
+        * Action after providing the bnsupport tool code
+        * Validate the string the user provided
+        */
+        window.validateBnsupport = function validateBnsupport() {
+          const bnsupportIDRegex = new RegExp(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/);
+          if (bnsupportIDRegex.test(allData.bnsupportFilled)) {
+            if (allData.platformSelected == 'Windows' ||
+              allData.platformSelected == 'OS X' ||
+              allData.platformSelected == 'Linux') {
+              goToPage5();
+            } else {
+              goToPage4();
+            }
+          } else {
+            alert("The ID you provided is not valid");
+            goToPage3();
+          }
+        };
+
+        /**
+        * Action after providing the bnsupport tool code
+        * Show the user the errors the tool found
         */
         window.goToPage4 = function goToPage4() {
-          if (allData.textareaFilled) {
-            allData.textareaSanitized = escapeHtml(allData.textareaFilled);
-          }
           allData.currentPage = 4;
-          const page4 = $.templates('#bnsupportPage');
+          const page4 = $.templates('#bndiagnosticPage');
           page4.link('#bitnamiContainer', allData);
+          getBndiagnostic(allData.bnsupportFilled);
+        };
+
+        /**
+        * Action after explaining why the bndiagnostic info was not useful.
+        * Show a different textarea asking for information before creating the case
+        */
+        window.goToPage5 = function goToPage5() {
+          allData.currentPage = 5;
+          const page6 = $.templates('#explanationCase');
+          page6.link('#bitnamiContainer', allData);
         };
 
         /**
@@ -402,20 +489,23 @@ export default {
 
           if (!allData.textareaFilled) allData.textareaFilled = 'Description not provided';
           if (allData.typeSelected === 'Technical issue') {
-            if (!allData.bnsupportFilled) allData.createTopic = confirm("In most cases using the Bnsupport tool considerably shortens the time it takes to solve an issue. Please consider running it before creating a new topic.\n\nCreate the topic anyway?");
-            if (allData.createTopic || allData.bnsupportFilled) {
-              body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n`;
-              if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n`;
-              body += `**Description:**\n ${allData.textareaFilled}`;
-              dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
-              dataToSend.raw = body;
+            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n\n`;
+            if (allData.bnsupportFilled) body += `**bnsupport ID:** ${allData.bnsupportFilled}\n\n`;
+            if (allData.bndiagnosticOutput) body += `**bndiagnostic output:**\n\`\`\`${allData.bndiagnosticOutput}\`\`\`\n`;
+            if (allData.bndiagnosticReasonFilled) {
+              body += `**bndiagnostic failure reason:** ${allData.bndiagnosticReasonFilled}\n\n`;
+            } else if (allData.bndiagnosticReasonSelected) {
+              body += `**bndiagnostic failure reason:** ${allData.bndiagnosticReasonSelected}\n\n`;
             }
-          } else if (allData.typeSelected === 'How to') {
-            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n**Description:**\n ${allData.textareaFilled}`;
+            body += `**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
             dataToSend.raw = body;
-          } else if (allData.typeSelected === 'Suggestion') {
-            body = `**Type:** ${allData.typeSelected}\n**Description:**\n ${allData.textareaFilled}`;
+          } else if (allData.typeSelected === 'How to') {
+            body = `**Keywords:** ${allData.applicationSelected} - ${allData.platformSelected} - ${allData.typeSelected} - ${allData.topicSelected}\n\n**Description:**\n ${allData.textareaFilled}`;
+            dataToSend.category = _.filter(allData.applicationValues, {application: allData.applicationSelected})[0].id;
+            dataToSend.raw = body;
+          } else if (allData.typeSelected === 'Suggestion' || allData.typeSelected === 'Bitnami Support Tool') {
+            body = `**Type:** ${allData.typeSelected}\n\n**Description:**\n ${allData.textareaFilled}`;
             dataToSend.category = _.filter(allData.applicationValues, {application: 'General'})[0].id;
             dataToSend.raw = body;
           }

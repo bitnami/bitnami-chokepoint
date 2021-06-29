@@ -19,8 +19,14 @@
     margin: auto !important;
 }
 
-.bitnami-b textarea, p.bnsupport {
+.bitnami-b textarea, p.bnsupport, .bndiagnostic, .bndiagnostic__results {
     max-width: 40em !important;
+}
+
+.bndiagnostic__text {
+    max-width: 49em !important;
+    white-space: pre-wrap;
+    display: table;
 }
 
 .tag-small {
@@ -35,18 +41,25 @@
     margin-top: unset !important;
 }
 
-.bnsupport {
+textarea.bnsupport {
     min-height: unset !important;
-    max-height: 2.5em !important;
+    max-height: 3em !important;
+    max-width: 40em !important;
+    resize: none !important;
+}
+
+.bndiagnostic {
+    min-height: unset !important;
+    max-height: 40em !important;
     max-width: 40em !important;
     resize: none !important;
 }
 
 .title {
   min-height: unset !important;
-  max-height: 5em !important;
+  height: 3em !important;
+  max-height: 10em !important;
   max-width: 40em !important;
-  resize: none !important;
 }
 
 .issue {

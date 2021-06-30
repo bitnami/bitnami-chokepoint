@@ -114,6 +114,7 @@ export default {
           const topicID = _.filter(topicArray, {topic: topic})[0].id;
           let arr = usefulLinks[topicID]["common"];
 
+          if (app === "WordPress + NGINX + SSL") app = "wordpress-pro";
           const appID = app.replace(/\s+/g, '-').toLowerCase();
           if (usefulLinks[topicID][appID]) {
             arr = arr.concat(usefulLinks[topicID][appID]);
@@ -121,7 +122,8 @@ export default {
 
           $('.useful__links__results').empty();
           for (let i = 0; i < arr.length; i++) {
-            $('.useful__links__results').append(`<a class="useful__link" target="_blank" href="${arr[i]}">${arr[i]}</a>`);
+            $('.useful__links__results').append(`<h5>${arr[i].title}</h5>`);
+            $('.useful__links__results').append(`<a class="useful__link" target="_blank" href="${arr[i].link}">${arr[i].link}</a>`);
           }
         }
 

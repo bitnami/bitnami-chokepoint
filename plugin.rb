@@ -3,9 +3,8 @@
 # version: 1.1.0
 # authors: crhernandez, jsalmeron
 
-register_asset "javascripts/discourse/initializers/search.js.es6"
 register_asset "javascripts/discourse/initializers/chokePoint.js.es6"
 
 extend_content_security_policy(
-  script_src: ['https://bndiagnostic-retrieval.web.bitnami.net', 'https://bndiagnostic-retrieval.dev.bitnami.net'],
+  script_src: ['https://downloads.bitnami.com', 'https://bndiagnostic-retrieval.web.bitnami.net', 'https://bndiagnostic-retrieval.dev.bitnami.net'],
 )

@@ -196,8 +196,8 @@
         [^[include tmpl="#bndiagnostic-feedback"/]]
       [[/if]]
       <div class="margin-t-small">
-        <button class="button button-cancel" onclick="cancel()">Cancel</button>
-        <button class="button" onclick="create()">Create Topic</button>
+        <button class="button" onclick="cancel()">Cancel</button>
+        <button class="button button-accent" onclick="create()">Create Topic</button>
         <div class="text-r padding-r-giant padding-t-normal" style="float: right">
           [^[if typeSelected != 'Technical issue']]
             <a onclick="goToPage2()">Go back</a>
@@ -222,11 +222,11 @@
     <div class="col-6 margin-h-big">
       [^[include tmpl="#bndiagnostic"/]]
       <div class="margin-t-small">
-      <button class="button button-cancel" onclick="cancel()">Cancel</button>
-        <button class="button" onclick="goToPage5()" disabled="true">Yes, but it was not useful</button>
-        <div class="text-r padding-r-giant padding-t-normal" style="float: right">
-          <a onclick="goToPage3()">Go back</a>
-        </div>
+      <button class="button" onclick="cancel()">Cancel</button>
+      <button class="button button-accent" onclick="goToPage5()" disabled="true">Yes, but it was not useful</button>
+      <div class="text-r padding-r-giant padding-t-normal" style="float: right">
+        <a onclick="goToPage3()">Go back</a>
+      </div>
       </div>
     </div>
   </div>
@@ -244,8 +244,8 @@
     <div class="col-6 margin-h-big">
       [^[include tmpl="#bnsupport"/]]
       <div class="margin-t-small">
-        <button class="button button-cancel" onclick="cancel()">Cancel</button>
-        <button class="button" onclick="validateBnsupport()">Next</button>
+        <button class="button" onclick="cancel()">Cancel</button>
+        <button class="button button-accent" onclick="validateBnsupport()">Next</button>
         <div class="text-r padding-r-giant padding-t-normal" style="float: right">
           <a onclick="goToPage2()">Go back</a>
         </div>
@@ -289,21 +289,21 @@
           [[/if]]
         [[/if]]
         [^[if ((typeSelected == 'How to' || typeSelected == 'Technical issue') && (platformSelected && !(platformSelected == 'Containers' || platformSelected == 'Charts')) && applicationSelected && topicSelected)]]
-          <button class="button button-cancel" onclick="cancel()">Cancel</button>
-          <button class="button" onclick="goToPage2()">Next</button>
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="goToPage2()">Next</button>
         [^[else typeSelected == 'Suggestion' || typeSelected == 'Bitnami Support Tool']]
-          <button class="button button-cancel" onclick="cancel()">Cancel</button>
-          <button class="button" onclick="create()">Create topic</button>
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="create()">Create topic</button>
         [^[else platformSelected == 'Containers']]
           <p>The Bitnami Community for container issues is located on GitHub. You can create a GitHub issue on the Issues section of the Bitnami container's repository.</p>
-          <button class="button button-cancel" onclick="cancel()">Cancel</button>
-          <button class="button" onclick="window.open('https://github.com/bitnami/','_blank')">Go to Bitnami GitHub</button>
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="window.open('https://github.com/bitnami/','_blank')">Go to Bitnami GitHub</button>
         [^[else platformSelected == 'Charts']]
           <p>The Bitnami Community for chart issues is located on GitHub. You can create a GitHub issue on the Issues section of the Bitnami Chart's repository.</p>
-          <button class="button button-cancel" onclick="cancel()">Cancel</button>
-          <button class="button" onclick="window.open('https://github.com/bitnami/charts/issues','_blank')">Go to Bitnami Charts GitHub</button>
+          <button class="button" onclick="cancel()">Cancel</button>
+          <button class="button button-accent" onclick="window.open('https://github.com/bitnami/charts/issues','_blank')">Go to Bitnami Charts GitHub</button>
         [[else]]
-            <button class="button button-cancel" onclick="cancel()">Cancel</button>
+            <button class="button" onclick="cancel()">Cancel</button>
         [[/if]]
       </div>
     </div>

@@ -123,7 +123,13 @@ export default {
           $('.useful__links__results').empty();
           for (let i = 0; i < arr.length; i++) {
             $('.useful__links__results').append(`<h5>${arr[i].title}</h5>`);
-            $('.useful__links__results').append(`<a class="useful__link" target="_blank" href="${arr[i].link}">${arr[i].link}</a>`);
+            if (Array.isArray(arr[i].link)) {
+              for (let j = 0; j < arr[i].link.length; j++) {
+                $('.useful__links__results').append(`<a class="useful__link" target="_blank" style="display: table;" href="${arr[i].link[j]}">${arr[i].link[j]}</a>`);
+              }
+            } else {
+              $('.useful__links__results').append(`<a class="useful__link" target="_blank" href="${arr[i].link}">${arr[i].link}</a>`);
+            }
           }
         }
 
@@ -168,7 +174,7 @@ If you continue running into issues when running the Bitnami Support tool, pleas
           applicationSelected: null,
           applicationValues: applicationArray,
           topicSelected: null,
-          topicValues: chokepointMetadata.topicArray.sort(propComparator('topic')),
+          topicValues: chokepointMetadata.topicArray,
           titleFilled: null,
           bnsupportFilled: null,
           bndiagnosticOutput: null,

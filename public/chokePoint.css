@@ -33,14 +33,6 @@
     font-size: 0.55019em !important;
 }
 
-.bitnami-b .search__results__result {
-    padding-bottom: unset !important;
-}
-
-.bitnami-b .search__results {
-    margin-top: unset !important;
-}
-
 textarea.bnsupport {
     min-height: unset !important;
     max-height: 3em !important;

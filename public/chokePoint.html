@@ -192,7 +192,7 @@
     <div class="col-6 margin-h-big">
       [^[include tmpl="#title"/]]
       [^[include tmpl="#issue"/]]
-      [^[if typeSelected == 'Technical issue' && !(platformSelected == 'Windows' || platformSelected == 'OS X' || platformSelected == 'Linux')]]
+      [^[if typeSelected == 'Technical issue' && platformSelected != 'Installers']]
         [^[include tmpl="#bndiagnostic-feedback"/]]
       [[/if]]
       <div class="margin-t-small">

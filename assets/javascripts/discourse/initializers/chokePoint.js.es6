@@ -10,7 +10,7 @@ export default {
     const communityURL = window.location.origin;
     let endpointURL;
     if (/community.bitnami.com/.test(window.location.host)) {
-      endpointURL="https://bndiagnostic-retrieval.web.bitnami.net"
+      endpointURL="https://bndiagnostic-retrieval.bitnami.com"
     } else {
       endpointURL="https://bndiagnostic-retrieval.dev.bitnami.net"
     }
@@ -240,9 +240,7 @@ If you continue running into issues when running the Bitnami Support tool, pleas
         window.validateBnsupport = function validateBnsupport() {
           const bnsupportIDRegex = new RegExp(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/);
           if (bnsupportIDRegex.test(allData.bnsupportFilled)) {
-            if (allData.platformSelected == 'Windows' ||
-              allData.platformSelected == 'OS X' ||
-              allData.platformSelected == 'Linux') {
+            if (allData.platformSelected == 'Installers') {
               goToPage5();
             } else {
               goToPage4();
